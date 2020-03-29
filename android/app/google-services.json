@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "937644251177",
+    "firebase_url": "https://learnaflower.firebaseio.com",
+    "project_id": "learnaflower",
+    "storage_bucket": "learnaflower.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:937644251177:android:37120bcb8e5d681199e438",
+        "android_client_info": {
+          "package_name": "com.example.learnaflower"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "937644251177-i4lpcqrh1k7ihuocfb4o9uk38avmgrit.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFTFXHXLZAJDhy5cwNofhv7J5M8C_mojg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "937644251177-i4lpcqrh1k7ihuocfb4o9uk38avmgrit.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
