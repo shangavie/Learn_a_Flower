@@ -100,23 +100,22 @@ Widget buildResultCard(data) {
       Padding(
           padding: new EdgeInsets.all(10.0),
           child: new Card(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5.0)),
+
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
             elevation: 2.0,
             child: new Column(
               children: <Widget>[
                 Container(
-                  width: 300.0, //MediaQuery.of(context).size.width,
+                  width: 300.0,//MediaQuery.of(context).size.width,
                   height: 200.0,
                   child: Image.network(data["image"],
                       fit: BoxFit.fill),
                 ),
                 SizedBox(height: 18.0),
-                Center(child: Container(
+                Center(child:Container(
                     padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
                     child: Text(data["name"],
-                        style: TextStyle(
-                            fontSize: 20.0, fontWeight: FontWeight.bold)))),
+                        style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)))),
                 SizedBox(height: 18.0),
                 Container(
                     padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
@@ -125,7 +124,10 @@ Widget buildResultCard(data) {
                           fontSize: 13.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.blueGrey),)),
+
                 SizedBox(height: 20.0),
+
+
                 Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
@@ -144,7 +146,9 @@ Widget buildResultCard(data) {
                     ]),
                 SizedBox(height: 20.0),
                 Row(
+
                     mainAxisAlignment: MainAxisAlignment.start,
+
                     children: <Widget>[
                       CircleAvatar(
                         backgroundColor: Colors.greenAccent,
@@ -175,6 +179,7 @@ Widget buildResultCard(data) {
                             fontWeight: FontWeight.bold,
                             color: Colors.blueGrey),
                       ),
+
                     ]),
                 SizedBox(height: 20.0),
               ],

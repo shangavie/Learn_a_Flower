@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:learnaflower/search.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Home extends StatefulWidget {
+
   @override
   HomeState createState() {
     return HomeState();
@@ -14,12 +15,13 @@ class HomeState extends State<Home> {
 
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
 
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text("FlowerSnap"),
+        title: Text('FlowerSnap'),
         elevation: 20.0,
         backgroundColor: Color.fromRGBO(61, 212, 125, 100),
         leading: IconButton(
