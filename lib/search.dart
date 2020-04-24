@@ -10,7 +10,6 @@ class Search extends StatefulWidget {
 }
 
 class SearchState extends State<Search> {
-
   var queryResultSet = [];
   var tempSearchStore = [];
 
@@ -63,7 +62,7 @@ class SearchState extends State<Search> {
             )
           ],
           actionsIconTheme:
-          IconThemeData(size: 30.0, color: Colors.white, opacity: 100.0),
+              IconThemeData(size: 30.0, color: Colors.white, opacity: 100.0),
         ),
         body: ListView(children: <Widget>[
           Padding(
@@ -81,10 +80,10 @@ class SearchState extends State<Search> {
           ),
           SizedBox(height: 10.0),
           GridView.count(
-              padding: EdgeInsets.only(left: 5.0, right: 5.0),
+              padding: EdgeInsets.only(left: 10.0, right: 10.0),
               crossAxisCount: 1,
-              crossAxisSpacing: 1.0,
-              mainAxisSpacing: 1.0,
+              //crossAxisSpacing: 4.0,
+              //mainAxisSpacing: 4.0,
               primary: false,
               shrinkWrap: true,
               children: tempSearchStore.map((element) {
@@ -95,97 +94,172 @@ class SearchState extends State<Search> {
 }
 
 Widget buildResultCard(data) {
-  return ListView(
-    children: <Widget>[
-      Padding(
-          padding: new EdgeInsets.all(10.0),
-          child: new Card(
+  return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+      elevation: 2.0,
+      child: Container(
+          child: Column(
+        children: <Widget>[
+          Expanded(
+            flex: 6, // 60%
+            child: Container(
+              width: 200.0, //MediaQuery.of(context).size.width,
+              height: 200.0,
+              child: Image.network(data["image"], fit: BoxFit.fill),
+            ),
+          ),
+          Expanded(
+            flex: 2, // 20%
+            child: Container(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
+                child: Text(data["name"],
+                    style: TextStyle(
+                        fontSize: 20.0, fontWeight: FontWeight.bold))),
+          ),
+          Expanded(
+            flex: 3, // 30%
+            child: Container(
+                padding: EdgeInsets.fromLTRB(20, 2, 20, 10),
+                child: Text(
+                  data["description"],
+                  style: TextStyle(
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blueGrey),
+                )),
+          ),
+          Expanded(
+            flex: 2, // 20%
+            child: Container(
+              padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    CircleAvatar(
+                      backgroundColor: Colors.greenAccent,
+                      child:
+                          Icon(Icons.wb_sunny, color: Colors.white, size: 20.0),
+                    ),
+                    Text(
+                      data["sunlight"],
+                      style: TextStyle(
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blueGrey),
+                    ),
+                  ]),
+            ),
+          ),
+          Expanded(
+            flex: 2, // 20%
+            child: Container(
+              padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    CircleAvatar(
+                      backgroundColor: Colors.greenAccent,
+                      child: Icon(Icons.filter_hdr,
+                          color: Colors.white, size: 20.0),
+                    ),
+                    Text(
+                      data["soil"],
+                      style: TextStyle(
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blueGrey),
+                    ),
+                  ]),
+            ),
+          ),
+          Expanded(
+            flex: 2, // 20%
+            child: Container(
+              padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    CircleAvatar(
+                      backgroundColor: Colors.greenAccent,
+                      child: Icon(Icons.local_florist,
+                          color: Colors.white, size: 20.0),
+                    ),
+                    Text(
+                      data["blooms"],
+                      style: TextStyle(
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blueGrey),
+                    ),
+                  ]),
+            ),
+          ),
+        ],
+      )));
 
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-            elevation: 2.0,
-            child: new Column(
-              children: <Widget>[
-                Container(
-                  width: 300.0,//MediaQuery.of(context).size.width,
-                  height: 200.0,
-                  child: Image.network(data["image"],
-                      fit: BoxFit.fill),
-                ),
-                SizedBox(height: 18.0),
-                Center(child:Container(
+  /*
+  return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+      elevation: 2.0,
+      child: Container(
+        child: new Column(
+          children: <Widget>[
+            Container(
+              width: 300.0, //MediaQuery.of(context).size.width,
+              height: 200.0,
+              child: Image.network(data["image"], fit: BoxFit.fill),
+            ),
+            Center(
+                child: Container(
                     padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
                     child: Text(data["name"],
-                        style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)))),
-                SizedBox(height: 18.0),
-                Container(
-                    padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
-                    child: Text(data["description"],
-                      style: TextStyle(
-                          fontSize: 13.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blueGrey),)),
-
-                SizedBox(height: 20.0),
-
-
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      CircleAvatar(
-                        backgroundColor: Colors.greenAccent,
-                        child:
-                        Icon(Icons.wb_sunny, color: Colors.white, size: 30.0),
-                      ),
-                      Text(
-                        data["sunlight"],
                         style: TextStyle(
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blueGrey),
-                      ),
-                    ]),
-                SizedBox(height: 20.0),
-                Row(
-
-                    mainAxisAlignment: MainAxisAlignment.start,
-
-                    children: <Widget>[
-                      CircleAvatar(
-                        backgroundColor: Colors.greenAccent,
-                        child: Icon(Icons.filter_hdr,
-                            color: Colors.white, size: 30.0),
-                      ),
-                      Text(
-                        data["soil"],
-                        style: TextStyle(
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blueGrey),
-                      ),
-                    ]),
-                SizedBox(height: 20.0),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      CircleAvatar(
-                        backgroundColor: Colors.greenAccent,
-                        child: Icon(Icons.local_florist,
-                            color: Colors.white, size: 30.0),
-                      ),
-                      Text(
-                        data["blooms"],
-                        style: TextStyle(
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blueGrey),
-                      ),
-
-                    ]),
-                SizedBox(height: 20.0),
-              ],
-            ),
-          )
+                            fontSize: 20.0, fontWeight: FontWeight.bold)))),
+            Container(
+                padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
+                child: Text(
+                  data["description"],
+                  style: TextStyle(
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blueGrey),
+                )),
+          ],
+        ),
       )
-    ],
   );
+*/
+
+  /*
+  return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+      elevation: 2.0,
+      child: Container(
+        child: new Column(
+          children: <Widget>[
+            Container(
+              width: 300.0, //MediaQuery.of(context).size.width,
+              height: 200.0,
+              child: Image.network(data["image"], fit: BoxFit.fill),
+            ),
+            Center(
+                child: Container(
+                    padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
+                    child: Text(data["name"],
+                        style: TextStyle(
+                            fontSize: 20.0, fontWeight: FontWeight.bold)))),
+            Container(
+                padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
+                child: Text(
+                  data["description"],
+                  style: TextStyle(
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blueGrey),
+                )),
+          ],
+        ),
+      ));
+
+   */
 }

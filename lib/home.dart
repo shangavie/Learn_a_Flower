@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:learnaflower/search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:like_button/like_button.dart';
 
 class Home extends StatefulWidget {
-
   @override
   HomeState createState() {
     return HomeState();
@@ -12,9 +12,7 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
-
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
-
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +29,6 @@ class HomeState extends State<Home> {
           },
         ),
         actions: <Widget>[
-
           Padding(
             padding: EdgeInsets.only(right: 20.0),
             child: GestureDetector(
@@ -44,7 +41,7 @@ class HomeState extends State<Home> {
           )
         ],
         actionsIconTheme:
-        IconThemeData(size: 30.0, color: Colors.white, opacity: 100.0),
+            IconThemeData(size: 30.0, color: Colors.white, opacity: 100.0),
       ),
       body: ListPage(),
       drawer: Drawer(
@@ -55,7 +52,8 @@ class HomeState extends State<Home> {
               decoration: BoxDecoration(
                 color: Color.fromRGBO(61, 212, 125, 100),
                 image: const DecorationImage(
-                  image: NetworkImage('https://i.pinimg.com/originals/17/56/20/1756208b78720991768297bf89d27f2b.png'),
+                  image: NetworkImage(
+                      'https://i.pinimg.com/originals/17/56/20/1756208b78720991768297bf89d27f2b.png'),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -68,13 +66,9 @@ class HomeState extends State<Home> {
               title: Text("Home"),
               onTap: () {
                 //Navigate to Home
-                /*
+
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => View())
-                );
-                 */
+                    context, MaterialPageRoute(builder: (context) => Home()));
               },
             ),
             ListTile(
@@ -106,7 +100,7 @@ class HomeState extends State<Home> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => View())
+                        builder: (context) => Add())
                 );
                  */
               },
@@ -120,10 +114,7 @@ class HomeState extends State<Home> {
               onTap: () {
                 //Navigate to Search Flower Details
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Search())
-                );
+                    context, MaterialPageRoute(builder: (context) => Search()));
               },
             ),
             ListTile(
@@ -138,7 +129,7 @@ class HomeState extends State<Home> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => View())
+                        builder: (context) => Favourites())
                 );
                  */
               },
@@ -155,7 +146,7 @@ class HomeState extends State<Home> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => View())
+                        builder: (context) => About())
                 );
                  */
               },
@@ -173,13 +164,13 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
-
   Future _data;
 
   Future getData() async {
     var firestore = Firestore.instance;
     QuerySnapshot qn = await firestore.collection("flower").getDocuments();
     return qn.documents;
+    //return await firestore.collection("flower").snapshots();
   }
 
   navigateToDetail(DocumentSnapshot flower) {
@@ -187,8 +178,14 @@ class _ListPageState extends State<ListPage> {
         context,
         MaterialPageRoute(
             builder: (context) => DetailPage(
-              flower: flower,
-            )));
+                  flower: flower,
+                )));
+  }
+
+  deleteData(DocumentSnapshot flower) async {
+    var firestore = Firestore.instance;
+    await firestore.collection("flower").document(flower.documentID).delete();
+    setState(() {});
   }
 
   @override
@@ -200,7 +197,6 @@ class _ListPageState extends State<ListPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-
       child: FutureBuilder(
           future: getData(),
           builder: (_, snapshot) {
@@ -208,8 +204,7 @@ class _ListPageState extends State<ListPage> {
               return Center(
                 child: Text("Loading..."),
               );
-            }
-            else{
+            } else {
               return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (_, index) {
@@ -234,8 +229,7 @@ class _ListPageState extends State<ListPage> {
                                     navigateToDetail(snapshot.data[index]),
                               ),
                               ButtonBar(
-                                mainAxisSize: MainAxisSize
-                                    .min,
+                                mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   new RaisedButton(
                                     child: new Text('Feature'),
@@ -259,10 +253,13 @@ class _ListPageState extends State<ListPage> {
                                   ),
                                   new RaisedButton(
                                     child: new Text('Delete'),
-                                    onPressed: () => {},
+                                    onPressed: () =>
+                                        deleteData(snapshot.data[index]),
                                     color: Colors.red,
                                     textColor: Colors.white,
                                   ),
+
+/*
                                   CircleAvatar(
                                     backgroundColor: Colors.greenAccent,
                                     child: Icon(Icons.thumb_up,
@@ -273,6 +270,8 @@ class _ListPageState extends State<ListPage> {
                                     child: Icon(Icons.thumb_down,
                                         color: Colors.white, size: 30.0),
                                   ),
+
+ */
                                 ],
                               ),
                             ],
@@ -306,9 +305,8 @@ class _DetailPageState extends State<DetailPage> {
         ),
         actions: <Widget>[],
         actionsIconTheme:
-        IconThemeData(size: 30.0, color: Colors.white, opacity: 100.0),
+            IconThemeData(size: 30.0, color: Colors.white, opacity: 100.0),
       ),
-
       body: new Padding(
         padding: new EdgeInsets.all(10.0),
         child: new Card(
@@ -320,70 +318,75 @@ class _DetailPageState extends State<DetailPage> {
                 child: Image.network(widget.flower.data["image"],
                     fit: BoxFit.fill),
               ),
-              SizedBox(height: 18.0),
               Text(
                 widget.flower.data["name"],
                 style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 18.0),
-              Text(
-                widget.flower.data["description"],
-                style: TextStyle(
-                    fontSize: 13.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blueGrey),
+              Container(
+                padding: EdgeInsets.fromLTRB(20, 2, 20, 10),
+                child: Text(
+                  widget.flower.data["description"],
+                  style: TextStyle(
+                      fontSize: 13.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blueGrey),
+                ),
               ),
-              SizedBox(height: 20.0),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    CircleAvatar(
-                      backgroundColor: Colors.greenAccent,
-                      child:
-                      Icon(Icons.wb_sunny, color: Colors.white, size: 30.0),
-                    ),
-                    Text(
-                      widget.flower.data["sunlight"],
-                      style: TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blueGrey),
-                    ),
-                  ]),
-              SizedBox(height: 20.0),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    CircleAvatar(
-                      backgroundColor: Colors.greenAccent,
-                      child: Icon(Icons.filter_hdr,
-                          color: Colors.white, size: 30.0),
-                    ),
-                    Text(
-                      widget.flower.data["soil"],
-                      style: TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blueGrey),
-                    ),
-                  ]),
-              SizedBox(height: 20.0),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    CircleAvatar(
-                      backgroundColor: Colors.greenAccent,
-                      child: Icon(Icons.local_florist,
-                          color: Colors.white, size: 30.0),
-                    ),
-                    Text(
-                      widget.flower.data["blooms"],
-                      style: TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blueGrey),
-                    ),
-                  ]),
+              Container(
+                  padding: EdgeInsets.fromLTRB(20, 2, 20, 10),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        CircleAvatar(
+                          backgroundColor: Colors.greenAccent,
+                          child: Icon(Icons.wb_sunny,
+                              color: Colors.white, size: 30.0),
+                        ),
+                        Text(
+                          widget.flower.data["sunlight"],
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueGrey),
+                        ),
+                      ])),
+              Container(
+                  padding: EdgeInsets.fromLTRB(20, 2, 20, 10),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        CircleAvatar(
+                          backgroundColor: Colors.greenAccent,
+                          child: Icon(Icons.filter_hdr,
+                              color: Colors.white, size: 30.0),
+                        ),
+                        Text(
+                          widget.flower.data["soil"],
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueGrey),
+                        ),
+                      ])),
+              Container(
+                  padding: EdgeInsets.fromLTRB(20, 2, 20, 10),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        CircleAvatar(
+                          backgroundColor: Colors.greenAccent,
+                          child: Icon(Icons.local_florist,
+                              color: Colors.white, size: 30.0),
+                        ),
+                        Text(
+                          widget.flower.data["blooms"],
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueGrey),
+                        ),
+                      ])),
             ],
           ),
         ),
