@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:passwordfield/passwordfield.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'api.dart';
 void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
@@ -11,21 +14,58 @@ class MyApp extends StatelessWidget {
   }
 }
 class SignupPage extends StatefulWidget {
-  @override
-  _SignupPageState createState() => _SignupPageState();
+  SignupPage() : super();
+  SignupPageState createState() => SignupPageState();
 }
-class _SignupPageState extends State<SignupPage> {
+class SignupPageState extends State<SignupPage> {
 
-  // To adjust the layout according to the screen size
-  // so that our layout remains responsive ,we need to
-  // calculate the screen height
   double screenHeight;
+  bool showTextField = false;
+  String _email,_password;
+  final GlobalKey<FormState> _formKey= GlobalKey<FormState>();
+//  TextEditingController controllerName = TextEditingController();
+//  TextEditingController controllerEmail = TextEditingController();
+//  TextEditingController controllerPassword = TextEditingController();
+
+  void Signup() async
+  {
+//    addNewUser(controllerName.text,controllerEmail.text,controllerPassword.text);
+//    controllerName.text='';
+//    controllerEmail.text='';
+//    controllerPassword.text='';
+    if(_formKey.currentState.validate()){
+      _formKey.currentState.save();
+      try
+      {
+          FirebaseUser user = (await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password)).user;
+          user.sendEmailVerification();
+          Navigator.of(context).pop();
+      }
+      catch(e)
+    {
+      print(e.message);
+    }
+    }
+  }
+
+  Widget buildBody(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      builder: (context, snapshot) {
+        if(snapshot.hasError) {
+          return Text('Error ${snapshot.error}');
+        }
+        return CircularProgressIndicator();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-
     screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: SingleChildScrollView(
+      resizeToAvoidBottomPadding: false,
+      body: Form(
+        key: _formKey,
         child: Stack(
           children: <Widget>[
             lowerSection(context),
@@ -49,7 +89,7 @@ class _SignupPageState extends State<SignupPage> {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
-        height: screenHeight / 2,
+        height: screenHeight / 3,
         color: Color(0xFFECF0F3),
       ),
     );
@@ -85,25 +125,33 @@ class _SignupPageState extends State<SignupPage> {
                     height: 15,
                   ),
                   TextFormField(
-                    decoration: InputDecoration(
-                        labelText: "Name", hasFloatingPlaceholder: true),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
+                    validator: (input){
+                      if(input.isEmpty){
+                        'Please enter your email address';
+                      }
+                    },
+                    onSaved: (input) => _email=input,
+                   // controller: controllerEmail,
                     decoration: InputDecoration(
                         labelText: "Email", hasFloatingPlaceholder: true),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                   TextFormField(
+                    validator: (input){
+                      if(input.length<6){
+                        'You need to provide password with atleast 6 charcters';
+                      }
+                    },
+                    onSaved: (input) => _password=input,
+                   // controller: controllerEmail,
                     decoration: InputDecoration(
                         labelText: "Password", hasFloatingPlaceholder: true),
+                    obscureText: true,
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 50,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -116,7 +164,12 @@ class _SignupPageState extends State<SignupPage> {
                             left: 38, right: 38, top: 15, bottom: 15),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5)),
-                        onPressed: () {},
+                        onPressed: () {
+                          Signup();
+//                        setState(() {
+//                          showTextField = false;
+//                        });},
+                        }
                       )
                     ],
                   )
