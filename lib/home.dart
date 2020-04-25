@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:learnaflower/search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:like_button/like_button.dart';
+import 'package:share/share.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -119,17 +119,17 @@ class HomeState extends State<Home> {
             ),
             ListTile(
               leading: Icon(
-                Icons.star,
+                Icons.update,
                 color: Color.fromRGBO(61, 212, 125, 100),
               ),
-              title: Text("Favourites"),
+              title: Text("Update Flower Details"),
               onTap: () {
-                //Navigate to Favourites
+                //Navigate to Update Flower Details
                 /*
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Favourites())
+                        builder: (context) => Update())
                 );
                  */
               },
@@ -188,6 +188,14 @@ class _ListPageState extends State<ListPage> {
     setState(() {});
   }
 
+  share(BuildContext context, DocumentSnapshot flower) {
+    final RenderBox box = context.findRenderObject();
+    Share.share(
+        "${flower.data["name"]} \n ${flower.data["description"]} \n ${flower.data["image"]}",
+        subject: flower.data["name"],
+        sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -231,47 +239,28 @@ class _ListPageState extends State<ListPage> {
                               ButtonBar(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  new RaisedButton(
-                                    child: new Text('Feature'),
-                                    onPressed: () {
-                                      /*
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => View())
-                                              );
-                                       */
-                                    },
-                                    color: Colors.orange,
-                                    textColor: Colors.white,
-                                  ),
-                                  new RaisedButton(
-                                    child: new Text('Update'),
-                                    onPressed: () => {},
+
+
+                                  FlatButton.icon(
                                     color: Colors.blue,
-                                    textColor: Colors.white,
+                                    icon: Icon(Icons.share),
+                                    label: Text('Share Entry'),
+                                    onPressed: () {
+                                      share(context, snapshot.data[index]);
+                                    },
                                   ),
-                                  new RaisedButton(
-                                    child: new Text('Delete'),
-                                    onPressed: () =>
-                                        deleteData(snapshot.data[index]),
+
+
+                                  FlatButton.icon(
                                     color: Colors.red,
-                                    textColor: Colors.white,
+                                    icon: Icon(Icons.delete),
+                                    label: Text('Remove Entry'),
+                                    onPressed: () {
+                                      deleteData(snapshot.data[index]);
+                                    },
                                   ),
 
-/*
-                                  CircleAvatar(
-                                    backgroundColor: Colors.greenAccent,
-                                    child: Icon(Icons.thumb_up,
-                                        color: Colors.white, size: 30.0),
-                                  ),
-                                  CircleAvatar(
-                                    backgroundColor: Colors.redAccent,
-                                    child: Icon(Icons.thumb_down,
-                                        color: Colors.white, size: 30.0),
-                                  ),
 
- */
                                 ],
                               ),
                             ],
