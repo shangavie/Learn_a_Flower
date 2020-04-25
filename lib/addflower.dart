@@ -1,4 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
+import 'api.dart';
+import 'dart:io';
+import 'dart:async';
+import 'package:firebase_storage/firebase_storage.dart';
 
 void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
@@ -12,17 +18,52 @@ class MyApp extends StatelessWidget {
 }
 class AddFlowerPage extends StatefulWidget {
   @override
-  _AddFlowerPageState createState() => _AddFlowerPageState();
+  AddFlowerPage() : super();
+  AddFlowerPageState createState() => AddFlowerPageState();
 }
-class _AddFlowerPageState extends State<AddFlowerPage> {
+class AddFlowerPageState extends State<AddFlowerPage> {
 
-  // To adjust the layout according to the screen size
-  // so that our layout remains responsive ,we need to
-  // calculate the screen height
   double screenHeight;
+  bool showTextField = false;
+  TextEditingController controllerFlowerName = TextEditingController();
+  TextEditingController controllerDescription = TextEditingController();
+  TextEditingController controllerSunlight = TextEditingController();
+  TextEditingController controllerBlooms = TextEditingController();
+  TextEditingController controllerSoil = TextEditingController();
+  Future<File> imageFile;
+  String url;
+  addFlower()
+  {
+    addNewFlower(controllerFlowerName.text,controllerDescription.text,url,controllerSunlight.text,controllerBlooms.text,controllerSoil.text);
+    controllerFlowerName.text='';
+    controllerDescription.text='';
+    controllerSunlight.text='';
+    controllerBlooms.text='';
+    controllerSoil.text='';
+  }
+
+  File sampleImage;
+
+  Future getImage() async {
+    var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      sampleImage = tempImage;
+    });
+  }
+  Widget buildBody(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      builder: (context, snapshot) {
+        if(snapshot.hasError) {
+          return Text('Error ${snapshot.error}');
+        }
+        return CircularProgressIndicator();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-
     screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: SingleChildScrollView(
@@ -71,31 +112,21 @@ class _AddFlowerPageState extends State<AddFlowerPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
+                  showImage(),
                   Align(
                     child: ListTile(
-//                      title: Text(user.name),
                       title: IconButton(
                         icon: Icon(Icons.camera_alt),
                         iconSize: 40,
-//                        onPressed: (){
-//                          delete(user);
-//                        },
+                        onPressed: () {
+                          pickImageFromGallery(ImageSource.gallery);
+                        },
                       ),
-//                      onTap: (){
-//                        //update
-//                        setUpdateUI(user);
-//                      },
                     ),
                   ),
-                  Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 0.0, 10.0, 0.0),
-                      child: Text("Upload your flower image here",
-                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic)),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
+
                   TextField(
+                    controller: controllerFlowerName,
                     decoration: InputDecoration(
                         labelText: "Flower Name", hasFloatingPlaceholder: true,
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
@@ -106,10 +137,44 @@ class _AddFlowerPageState extends State<AddFlowerPage> {
                     height: 20,
                   ),
                   TextFormField(
+                    controller: controllerDescription,
                     decoration: InputDecoration(
                         labelText: "Description", hasFloatingPlaceholder: true,
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
                         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    controller: controllerSunlight,
+                    decoration: InputDecoration(
+                      labelText: "Sunlight", hasFloatingPlaceholder: true,
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+                      contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    controller: controllerBlooms,
+                    decoration: InputDecoration(
+                      labelText: "Blooms", hasFloatingPlaceholder: true,
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+                      contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    controller: controllerSoil,
+                    decoration: InputDecoration(
+                      labelText: "Soil", hasFloatingPlaceholder: true,
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+                      contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                     ),
                   ),
                   SizedBox(
@@ -120,13 +185,27 @@ class _AddFlowerPageState extends State<AddFlowerPage> {
                     children: <Widget>[
                       FlatButton(
                         child: Text("UPLOAD"),
-                        color: Color(0xFF4B9DFE),
+                        color: Color.fromRGBO(61, 212, 125, 100),
                         textColor: Colors.white,
                         padding: EdgeInsets.only(
                             left: 38, right: 38, top: 15, bottom: 15),
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5)),
-                        onPressed: () {},
+                            borderRadius: BorderRadius.circular(30)),
+                        onPressed: () async{
+                          //final StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child('myimage.jpg');
+                          final FirebaseStorage _storage = FirebaseStorage(storageBucket: 'gs://lab4-db.appspot.com');
+                          //final StorageUploadTask task = firebaseStorageRef.putFile(sampleImage);
+                          String filePath = 'images/${DateTime.now()}.png';
+                          StorageUploadTask _uploadTask= _storage.ref().child(filePath).putFile(sampleImage);
+                          var dowurl = await (await _uploadTask.onComplete).ref.getDownloadURL();
+                          url = dowurl.toString();
+                          addFlower();
+                          print(url);
+                        setState(() {
+                          showTextField = false;
+                        });
+                          showMessage(context);
+                        },
                       )
                     ],
                   )
@@ -138,6 +217,32 @@ class _AddFlowerPageState extends State<AddFlowerPage> {
       ],
     );
   }
+  showMessage(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("FlowerSnap"),
+      content: Text("Flower detail is uploaded successfully!"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
   Widget pageTitle() {
     return Container(
       margin: EdgeInsets.only(top: 50),
@@ -145,13 +250,46 @@ class _AddFlowerPageState extends State<AddFlowerPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+           IconButton(
+            icon: new Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
           Text(
-            "LEARN A FLOWER",
+            "FlowerSnap",
             style: TextStyle(
                 fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
           )
         ],
       ),
+    );
+  }
+  pickImageFromGallery(ImageSource source) async{
+    setState(() {
+      imageFile = ImagePicker.pickImage(source: source);
+    });
+  }
+  Widget showImage() {
+    return FutureBuilder<File>(
+      future: imageFile,
+      builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
+        sampleImage = snapshot.data;
+        if (snapshot.connectionState == ConnectionState.done &&
+            snapshot.data != null) {
+          return Image.file(
+            snapshot.data,
+            width: 200,
+            height: 200,
+          );
+        }
+        else {
+          sampleImage = snapshot.data;
+          return const Text(
+            'Upload your flower image here',
+            textAlign: TextAlign.center,
+          );
+        }
+
+      },
     );
   }
 }
