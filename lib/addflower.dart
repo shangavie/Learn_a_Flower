@@ -6,7 +6,6 @@ import 'dart:io';
 import 'dart:async';
 import 'package:firebase_storage/firebase_storage.dart';
 
-/*
 void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
@@ -17,9 +16,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-*/
-
-
 class AddFlowerPage extends StatefulWidget {
   @override
   AddFlowerPage() : super();
@@ -37,6 +33,7 @@ class AddFlowerPageState extends State<AddFlowerPage> {
   TextEditingController controllerMoreDetail = TextEditingController();
   Future<File> imageFile;
   String url;
+
   addFlower()
   {
     addNewFlower(controllerFlowerName.text,controllerDescription.text,url,controllerSunlight.text,controllerBlooms.text,controllerSoil.text,controllerMoreDetail.text);
@@ -55,6 +52,34 @@ class AddFlowerPageState extends State<AddFlowerPage> {
 
     setState(() {
       sampleImage = tempImage;
+    });
+  }
+
+  Future<void> _selectionDialog(BuildContext context){
+    return showDialog(context:context,builder: (BuildContext context)
+    {
+      return AlertDialog(
+        title: Text("Make a choice"),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              GestureDetector(
+                child: Text("Gallery"),
+                onTap: (){
+                  pickImageFromGallery(ImageSource.gallery,context);
+                },
+              ),
+              Padding(padding: EdgeInsets.all(8.0)),
+              GestureDetector(
+                child: Text("Camera"),
+                onTap: (){
+                  pickImageFromCamera(ImageSource.camera,context);
+                },
+              )
+            ],
+          ),
+        ),
+      );
     });
   }
   Widget buildBody(BuildContext context) {
@@ -125,7 +150,8 @@ class AddFlowerPageState extends State<AddFlowerPage> {
                         icon: Icon(Icons.camera_alt),
                         iconSize: 40,
                         onPressed: () {
-                          pickImageFromGallery(ImageSource.gallery);
+                          //pickImageFromGallery(ImageSource.gallery);
+                          _selectionDialog(context);
                         },
                       ),
                     ),
@@ -280,10 +306,17 @@ class AddFlowerPageState extends State<AddFlowerPage> {
       ),
     );
   }
-  pickImageFromGallery(ImageSource source) async{
+  pickImageFromGallery(ImageSource source, BuildContext context) async{
     setState(() {
       imageFile = ImagePicker.pickImage(source: source);
     });
+    Navigator.of(context).pop();
+  }
+  pickImageFromCamera(ImageSource source, BuildContext context) async{
+    setState(() {
+      imageFile = ImagePicker.pickImage(source: source);
+    });
+    Navigator.of(context).pop();
   }
   Widget showImage() {
     return FutureBuilder<File>(
