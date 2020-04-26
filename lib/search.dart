@@ -33,7 +33,7 @@ class SearchState extends State<Search> {
     } else {
       tempSearchStore = [];
       queryResultSet.forEach((element) {
-        if (element['name'].startsWith(capitalizedValue)) {
+        if (element['Name'].startsWith(capitalizedValue)) {
           setState(() {
             tempSearchStore.add(element);
           });
@@ -93,14 +93,14 @@ Widget buildResultCard(data) {
             child: Container(
               width: 200.0, //MediaQuery.of(context).size.width,
               height: 200.0,
-              child: Image.network(data["image"], fit: BoxFit.fill),
+              child: Image.network(data["Url"], fit: BoxFit.fill),
             ),
           ),
           Expanded(
             flex: 2, // 20%
             child: Container(
                 padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
-                child: Text(data["name"],
+                child: Text(data["Name"],
                     style: TextStyle(
                         fontSize: 20.0, fontWeight: FontWeight.bold))),
           ),
@@ -109,7 +109,7 @@ Widget buildResultCard(data) {
             child: Container(
                 padding: EdgeInsets.fromLTRB(20, 2, 20, 10),
                 child: Text(
-                  data["description"],
+                  data["Description"],
                   style: TextStyle(
                       fontSize: 12.0,
                       fontWeight: FontWeight.bold,
@@ -129,7 +129,7 @@ Widget buildResultCard(data) {
                           Icon(Icons.wb_sunny, color: Colors.white, size: 20.0),
                     ),
                     Text(
-                      data["sunlight"],
+                      data["Sunlight"],
                       style: TextStyle(
                           fontSize: 15.0,
                           fontWeight: FontWeight.bold,
@@ -151,7 +151,7 @@ Widget buildResultCard(data) {
                           color: Colors.white, size: 20.0),
                     ),
                     Text(
-                      data["soil"],
+                      data["Soil"],
                       style: TextStyle(
                           fontSize: 15.0,
                           fontWeight: FontWeight.bold,
@@ -173,7 +173,7 @@ Widget buildResultCard(data) {
                           color: Colors.white, size: 20.0),
                     ),
                     Text(
-                      data["blooms"],
+                      data["Blooms"],
                       style: TextStyle(
                           fontSize: 15.0,
                           fontWeight: FontWeight.bold,

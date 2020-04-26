@@ -41,7 +41,7 @@ class HomeState extends State<Home> {
           },
         ),
         actionsIconTheme:
-            IconThemeData(size: 30.0, color: Colors.white, opacity: 100.0),
+        IconThemeData(size: 30.0, color: Colors.white, opacity: 100.0),
       ),
       body: ListPage(),
       drawer: Drawer(
@@ -182,7 +182,7 @@ class _ListPageState extends State<ListPage> {
 
   Future getData() async {
     var firestore = Firestore.instance;
-    QuerySnapshot qn = await firestore.collection("flower").getDocuments();
+    QuerySnapshot qn = await firestore.collection("FlowerDetail").getDocuments();
     return qn.documents;
     //return await firestore.collection("flower").snapshots();
   }
@@ -192,21 +192,21 @@ class _ListPageState extends State<ListPage> {
         context,
         MaterialPageRoute(
             builder: (context) => DetailPage(
-                  flower: flower,
-                )));
+              flower: flower,
+            )));
   }
 
   deleteData(DocumentSnapshot flower) async {
     var firestore = Firestore.instance;
-    await firestore.collection("flower").document(flower.documentID).delete();
+    await firestore.collection("FlowerDetail").document(flower.documentID).delete();
     setState(() {});
   }
 
   share(BuildContext context, DocumentSnapshot flower) {
     final RenderBox box = context.findRenderObject();
     Share.share(
-        "Name: ${flower.data["name"]} \n Description: ${flower.data["description"]} \n \n ${flower.data["image"]}",
-        subject: "Flower Details | ${flower.data["name"]}",
+        "Name: ${flower.data["Name"]} \n Description: ${flower.data["Description"]} \n \n ${flower.data["Url"]}",
+        subject: "Flower Details | ${flower.data["Name"]}",
         sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
   }
 
@@ -239,11 +239,11 @@ class _ListPageState extends State<ListPage> {
                                 width: MediaQuery.of(context).size.width,
                                 height: 200.0,
                                 child: Image.network(
-                                    snapshot.data[index].data["image"],
+                                    snapshot.data[index].data["Url"],
                                     fit: BoxFit.fill),
                               ),
                               new ListTile(
-                                title: Text(snapshot.data[index].data["name"]),
+                                title: Text(snapshot.data[index].data["Name"]),
                                 trailing: Icon(
                                   Icons.keyboard_arrow_right,
                                 ),
@@ -294,7 +294,7 @@ class _DetailPageState extends State<DetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.flower.data["name"]),
+        title: Text(widget.flower.data["Name"]),
         backgroundColor: Color.fromRGBO(61, 212, 125, 100),
         leading: new IconButton(
           icon: new Icon(Icons.arrow_back, color: Colors.white),
@@ -302,7 +302,7 @@ class _DetailPageState extends State<DetailPage> {
         ),
         actions: <Widget>[],
         actionsIconTheme:
-            IconThemeData(size: 30.0, color: Colors.white, opacity: 100.0),
+        IconThemeData(size: 30.0, color: Colors.white, opacity: 100.0),
       ),
       body: new Padding(
         padding: new EdgeInsets.all(10.0),
@@ -312,18 +312,18 @@ class _DetailPageState extends State<DetailPage> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: 200.0,
-                child: Image.network(widget.flower.data["image"],
+                child: Image.network(widget.flower.data["Url"],
                     fit: BoxFit.fill),
               ),
               Text(
-                widget.flower.data["name"],
+                widget.flower.data["Name"],
                 style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 18.0),
               Container(
                 padding: EdgeInsets.fromLTRB(20, 2, 20, 10),
                 child: Text(
-                  widget.flower.data["description"],
+                  widget.flower.data["Description"],
                   style: TextStyle(
                       fontSize: 13.0,
                       fontWeight: FontWeight.bold,
@@ -341,7 +341,7 @@ class _DetailPageState extends State<DetailPage> {
                               color: Colors.white, size: 30.0),
                         ),
                         Text(
-                          widget.flower.data["sunlight"],
+                          widget.flower.data["Sunlight"],
                           style: TextStyle(
                               fontSize: 15.0,
                               fontWeight: FontWeight.bold,
@@ -359,7 +359,7 @@ class _DetailPageState extends State<DetailPage> {
                               color: Colors.white, size: 30.0),
                         ),
                         Text(
-                          widget.flower.data["soil"],
+                          widget.flower.data["Soil"],
                           style: TextStyle(
                               fontSize: 15.0,
                               fontWeight: FontWeight.bold,
@@ -377,7 +377,7 @@ class _DetailPageState extends State<DetailPage> {
                               color: Colors.white, size: 30.0),
                         ),
                         Text(
-                          widget.flower.data["blooms"],
+                          widget.flower.data["Blooms"],
                           style: TextStyle(
                               fontSize: 15.0,
                               fontWeight: FontWeight.bold,
@@ -387,10 +387,10 @@ class _DetailPageState extends State<DetailPage> {
               RaisedButton(
                 color: Colors.amber,
                 onPressed: () async {
-                  if (await canLaunch(widget.flower.data["moreDetails"])) {
-                    await launch(widget.flower.data["moreDetails"]);
+                  if (await canLaunch(widget.flower.data["DetailedUrl"])) {
+                    await launch(widget.flower.data["DetailedUrl"]);
                   } else {
-                    throw 'Could not launch $widget.flower.data["moreDetails"]';
+                    throw 'Could not launch $widget.flower.data["DetailedUrl"]';
                   }
                 },
                 child: Text(
