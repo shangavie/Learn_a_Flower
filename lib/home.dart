@@ -3,12 +3,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:learnaflower/search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:share/share.dart';
+import 'package:learnaflower/login.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Home extends StatefulWidget {
+  const Home({Key key, this.user}) : super(key: key);
+  final FirebaseUser user;
   @override
   HomeState createState() {
     return HomeState();
   }
+}
+
+final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+_signOut(BuildContext context) async {
+  await _firebaseAuth.signOut();
+  Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
 }
 
 class HomeState extends State<Home> {
@@ -28,18 +38,6 @@ class HomeState extends State<Home> {
             _scaffoldKey.currentState.openDrawer();
           },
         ),
-        actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: GestureDetector(
-              onTap: () {},
-              child: Icon(
-                Icons.account_circle,
-                size: 26.0,
-              ),
-            ),
-          )
-        ],
         actionsIconTheme:
             IconThemeData(size: 30.0, color: Colors.white, opacity: 100.0),
       ),
@@ -55,6 +53,16 @@ class HomeState extends State<Home> {
                   image: NetworkImage(
                       'https://i.pinimg.com/originals/17/56/20/1756208b78720991768297bf89d27f2b.png'),
                   fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text(
+                'Welcome ${widget.user.email}',
+                style: TextStyle(
+                  fontSize: 23.0,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromRGBO(61, 212, 125, 100),
                 ),
               ),
             ),
@@ -151,6 +159,16 @@ class HomeState extends State<Home> {
                  */
               },
             ),
+            ListTile(
+              leading: Icon(
+                Icons.power_settings_new,
+                color: Color.fromRGBO(61, 212, 125, 100),
+              ),
+              title: Text("Logout"),
+              onTap: () {
+                _signOut(context);
+              },
+            ),
           ],
         ),
       ),
@@ -191,8 +209,8 @@ class _ListPageState extends State<ListPage> {
   share(BuildContext context, DocumentSnapshot flower) {
     final RenderBox box = context.findRenderObject();
     Share.share(
-        "${flower.data["name"]} \n ${flower.data["description"]} \n ${flower.data["image"]}",
-        subject: flower.data["name"],
+        "Name: ${flower.data["name"]} \n Description: ${flower.data["description"]} \n \n ${flower.data["image"]}",
+        subject: "Flower Details | ${flower.data["name"]}",
         sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
   }
 
@@ -239,8 +257,6 @@ class _ListPageState extends State<ListPage> {
                               ButtonBar(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-
-
                                   FlatButton.icon(
                                     color: Colors.blue,
                                     icon: Icon(Icons.share),
@@ -249,8 +265,6 @@ class _ListPageState extends State<ListPage> {
                                       share(context, snapshot.data[index]);
                                     },
                                   ),
-
-
                                   FlatButton.icon(
                                     color: Colors.red,
                                     icon: Icon(Icons.delete),
@@ -259,8 +273,6 @@ class _ListPageState extends State<ListPage> {
                                       deleteData(snapshot.data[index]);
                                     },
                                   ),
-
-
                                 ],
                               ),
                             ],
@@ -376,6 +388,24 @@ class _DetailPageState extends State<DetailPage> {
                               color: Colors.blueGrey),
                         ),
                       ])),
+              RaisedButton(
+                color: Colors.amber,
+                onPressed: () async {
+                  if (await canLaunch(widget.flower.data["moreDetails"])) {
+                    await launch(widget.flower.data["moreDetails"]);
+                  } else {
+                    throw 'Could not launch $widget.flower.data["moreDetails"]';
+                  }
+                },
+                child: Text(
+                  'View Further Details',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
