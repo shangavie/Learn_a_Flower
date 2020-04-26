@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:passwordfield/passwordfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'api.dart';
+
 void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
@@ -23,16 +22,9 @@ class SignupPageState extends State<SignupPage> {
   bool showTextField = false;
   String _email,_password;
   final GlobalKey<FormState> _formKey= GlobalKey<FormState>();
-//  TextEditingController controllerName = TextEditingController();
-//  TextEditingController controllerEmail = TextEditingController();
-//  TextEditingController controllerPassword = TextEditingController();
 
   void Signup() async
   {
-//    addNewUser(controllerName.text,controllerEmail.text,controllerPassword.text);
-//    controllerName.text='';
-//    controllerEmail.text='';
-//    controllerPassword.text='';
     if(_formKey.currentState.validate()){
       _formKey.currentState.save();
       try
@@ -113,7 +105,7 @@ class SignupPageState extends State<SignupPage> {
                   Align(
                     alignment: Alignment.topCenter,
                     child: Text(
-                      "WELCOME TO OUR LEARN A FLOWER APP",
+                      "WELCOME TO FlowerSnap",
                       style: TextStyle(
                         color: Colors.purpleAccent,
                         fontSize: 14,
@@ -131,7 +123,6 @@ class SignupPageState extends State<SignupPage> {
                       }
                     },
                     onSaved: (input) => _email=input,
-                   // controller: controllerEmail,
                     decoration: InputDecoration(
                         labelText: "Email", hasFloatingPlaceholder: true),
                   ),
@@ -145,7 +136,6 @@ class SignupPageState extends State<SignupPage> {
                       }
                     },
                     onSaved: (input) => _password=input,
-                   // controller: controllerEmail,
                     decoration: InputDecoration(
                         labelText: "Password", hasFloatingPlaceholder: true),
                     obscureText: true,
@@ -157,19 +147,28 @@ class SignupPageState extends State<SignupPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       FlatButton(
-                        child: Text("SIGN UP"),
-                        color: Color(0xFF4B9DFE),
+                        child: Text("CANCEL"),
+                        color: Color.fromRGBO(61, 212, 125, 100),
                         textColor: Colors.white,
                         padding: EdgeInsets.only(
                             left: 38, right: 38, top: 15, bottom: 15),
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5)),
+                            borderRadius: BorderRadius.circular(20)),
                         onPressed: () {
-                          Signup();
-//                        setState(() {
-//                          showTextField = false;
-//                        });},
+                          Navigator.of(context).pop();
                         }
+                      ),
+                      FlatButton(
+                          child: Text("SIGN UP"),
+                          color:Color.fromRGBO(61, 212, 125, 100),
+                          textColor: Colors.white,
+                          padding: EdgeInsets.only(
+                              left: 38, right: 38, top: 15, bottom: 15),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          onPressed: () {
+                            Signup();
+                          }
                       )
                     ],
                   )
