@@ -23,11 +23,13 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     check_if_already_login();
   }
+
   void check_if_already_login() async {
     logindata = await SharedPreferences.getInstance();
     newuser = (logindata.getBool('login') ?? true);
     print(newuser);
   }
+
   @override
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
@@ -115,18 +117,12 @@ class _LoginPageState extends State<LoginPage> {
                           onSaved: (input) => _password = input,
                           obscureText: true,
                         ),
-                        FlatButton(
-                          onPressed: () {
-                            //forgot password screen
-                          },
-                          textColor: Colors.blue,
-                          child: Text('Forgot Password'),
-                        ),
+                        SizedBox(height: 18.0),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
                               RaisedButton(
-                                onPressed: (){
+                                onPressed: () {
                                   signIn();
                                   logindata.setString('email', _email);
                                 },

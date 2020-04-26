@@ -128,12 +128,13 @@ Widget buildResultCard(data) {
                       child:
                           Icon(Icons.wb_sunny, color: Colors.white, size: 20.0),
                     ),
-                    Text(
-                      data["Sunlight"],
-                      style: TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blueGrey),
+                    Flexible(
+                      child: Text(data["Sunlight"],
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueGrey),
+                          overflow: TextOverflow.ellipsis),
                     ),
                   ]),
             ),
@@ -150,12 +151,13 @@ Widget buildResultCard(data) {
                       child: Icon(Icons.filter_hdr,
                           color: Colors.white, size: 20.0),
                     ),
-                    Text(
-                      data["Soil"],
-                      style: TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blueGrey),
+                    Flexible(
+                      child: Text(data["Soil"],
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueGrey),
+                          overflow: TextOverflow.ellipsis),
                     ),
                   ]),
             ),
@@ -172,12 +174,13 @@ Widget buildResultCard(data) {
                       child: Icon(Icons.local_florist,
                           color: Colors.white, size: 20.0),
                     ),
-                    Text(
-                      data["Blooms"],
-                      style: TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blueGrey),
+                    Flexible(
+                      child: Text(data["Blooms"],
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueGrey),
+                          overflow: TextOverflow.ellipsis),
                     ),
                   ]),
             ),

@@ -29,6 +29,7 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text('FlowerSnap'),
@@ -360,7 +361,7 @@ class _DetailPageState extends State<DetailPage> {
         actionsIconTheme:
             IconThemeData(size: 30.0, color: Colors.white, opacity: 100.0),
       ),
-      body: new Padding(
+      body: Padding(
         padding: new EdgeInsets.all(10.0),
         child: new Card(
           child: new Column(
@@ -396,12 +397,13 @@ class _DetailPageState extends State<DetailPage> {
                           child: Icon(Icons.wb_sunny,
                               color: Colors.white, size: 30.0),
                         ),
-                        Text(
-                          widget.flower.data["Sunlight"],
-                          style: TextStyle(
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blueGrey),
+                        Flexible(
+                          child: Text(widget.flower.data["Sunlight"],
+                              style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blueGrey),
+                              overflow: TextOverflow.ellipsis),
                         ),
                       ])),
               Container(
@@ -414,12 +416,13 @@ class _DetailPageState extends State<DetailPage> {
                           child: Icon(Icons.filter_hdr,
                               color: Colors.white, size: 30.0),
                         ),
-                        Text(
-                          widget.flower.data["Soil"],
-                          style: TextStyle(
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blueGrey),
+                        Flexible(
+                          child: Text(widget.flower.data["Soil"],
+                              style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blueGrey),
+                              overflow: TextOverflow.ellipsis),
                         ),
                       ])),
               Container(
@@ -432,12 +435,13 @@ class _DetailPageState extends State<DetailPage> {
                           child: Icon(Icons.local_florist,
                               color: Colors.white, size: 30.0),
                         ),
-                        Text(
-                          widget.flower.data["Blooms"],
-                          style: TextStyle(
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blueGrey),
+                        Flexible(
+                          child: Text(widget.flower.data["Blooms"],
+                              style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blueGrey),
+                              overflow: TextOverflow.ellipsis),
                         ),
                       ])),
               RaisedButton(
