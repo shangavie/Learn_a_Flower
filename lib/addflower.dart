@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'api.dart';
 import 'dart:io';
 import 'dart:async';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
@@ -32,11 +34,25 @@ class AddFlowerPageState extends State<AddFlowerPage> {
   TextEditingController controllerSoil = TextEditingController();
   TextEditingController controllerMoreDetail = TextEditingController();
   Future<File> imageFile;
-  String url;
+  String url, searchKey, loggedUser;
+  SharedPreferences logindata;
+  String loggedEmail;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initial();
+  }
+  void initial() async {
+    logindata = await SharedPreferences.getInstance();
+    setState(() {
+      loggedEmail = logindata.getString('email');
+    });
+  }
   addFlower()
   {
-    addNewFlower(controllerFlowerName.text,controllerDescription.text,url,controllerSunlight.text,controllerBlooms.text,controllerSoil.text,controllerMoreDetail.text);
+    addNewFlower(controllerFlowerName.text,controllerDescription.text,url,controllerSunlight.text,controllerBlooms.text,controllerSoil.text,controllerMoreDetail.text,loggedEmail, controllerFlowerName.text[0]);
     controllerFlowerName.text='';
     controllerDescription.text='';
     controllerSunlight.text='';

@@ -3,8 +3,8 @@ import 'package:learnaflower/flower.dart';
 
 String collectionName2 = "FlowerDetail";
 
-addNewFlower(String Name , String Description , String Url , String Sunlight , String Blooms , String Soil, String DetailedUrl){
-  Flower flower = Flower(fname: Name, description: Description, furl: Url, sunlight: Sunlight, blooms: Blooms, soil: Soil, detailedUrl: DetailedUrl);
+addNewFlower(String Name , String Description , String Url , String Sunlight , String Blooms , String Soil, String DetailedUrl, String LoggedUser, String searchKey){
+  Flower flower = Flower(fname: Name, description: Description, furl: Url, sunlight: Sunlight, blooms: Blooms, soil: Soil, detailedUrl: DetailedUrl, loggedUser: LoggedUser, searchkey: searchKey);
   try{
     Firestore.instance.runTransaction(
           (Transaction transaction) async{
