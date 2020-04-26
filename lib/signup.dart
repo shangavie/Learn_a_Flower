@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-/*
+import 'package:email_validator/email_validator.dart';
 void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
@@ -13,9 +12,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-*/
-
-
 class SignupPage extends StatefulWidget {
   SignupPage() : super();
   SignupPageState createState() => SignupPageState();
@@ -121,11 +117,9 @@ class SignupPageState extends State<SignupPage> {
                     height: 15,
                   ),
                   TextFormField(
-                    validator: (input){
-                      if(input.isEmpty){
-                        'Please enter your email address';
-                      }
-                    },
+                    // ignore: missing_return
+                    validator: (input)=> !EmailValidator.validate(input,true) || input.isEmpty
+                      ? 'Please provide a valid email address': null,
                     onSaved: (input) => _email=input,
                     decoration: InputDecoration(
                         labelText: "Email", hasFloatingPlaceholder: true),
@@ -136,7 +130,7 @@ class SignupPageState extends State<SignupPage> {
                   TextFormField(
                     validator: (input){
                       if(input.length<6){
-                        'You need to provide password with atleast 6 charcters';
+                        return 'You need to provide a password with atleast 6 charcters';
                       }
                     },
                     onSaved: (input) => _password=input,
