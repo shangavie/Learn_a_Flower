@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,7 +9,6 @@ import 'package:learnaflower/home.dart';
 import 'flower.dart';
 import 'api.dart';
 
-/*
 void main() => runApp(App());
 
 class App extends StatelessWidget{
@@ -19,9 +19,6 @@ class App extends StatelessWidget{
     );
   }
 }
-
- */
-
 
 class UpdateFlowerPage extends StatefulWidget{
   UpdateFlowerPage() : super();
@@ -39,30 +36,76 @@ class UpdateFlowerPageState extends State<UpdateFlowerPage>{
   //String url;
   Flower updateflower;
   Future<File> imageFile;
-
-  update(){
-    if(isEditing){
-      updateFlowerDetails(updateflower, controllerDescription.text,controllerSunlight.text,controllerBlooms.text,controllerSoil.text);
-      setState(() {
-        isEditing=false;
-      });
+  var uploadedBy;
+  checkValidUser(DocumentSnapshot flower,Flower flower1)
+  async {
+    final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+    FirebaseUser user = (await _firebaseAuth.currentUser());
+    var uploadedBy = flower.data["LoggedUser"];
+    var loggedInUser = user.email;
+    if (uploadedBy == loggedInUser) {
+      setUpdateUI(flower1);
     }
-    controllerFlowerName.text = '';
-    controllerDescription.text = '';
-    controllerSunlight.text='';
-    controllerBlooms.text='';
-    controllerSoil.text='';
+    else {
+      print(uploadedBy);
+      print(loggedInUser);
+      showAlertMessage(context);
+    }
   }
-//  File sampleImage;
-//
-//  Future getImage() async {
-//    var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
-//
-//    setState(() {
-//      sampleImage = tempImage;
-//    });
-//  }
+  update()  {
+      if (isEditing) {
+        updateFlowerDetails(
+            updateflower, controllerDescription.text, controllerSunlight.text,
+            controllerBlooms.text, controllerSoil.text);
+        setState(() {
+          isEditing = false;
+        });
+      }
+      controllerFlowerName.text = '';
+      controllerDescription.text = '';
+      controllerSunlight.text = '';
+      controllerBlooms.text = '';
+      controllerSoil.text = '';
+    }
 
+//    if(isEditing){
+//      updateFlowerDetails(updateflower, controllerDescription.text,controllerSunlight.text,controllerBlooms.text,controllerSoil.text);
+//      setState(() {
+//        isEditing=false;
+//      });
+//    }
+//    controllerFlowerName.text = '';
+//    controllerDescription.text = '';
+//    controllerSunlight.text='';
+//    controllerBlooms.text='';
+//    controllerSoil.text='';
+
+  showAlertMessage(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("FlowerSnap"),
+      content: Text("You are not authorized to edit this entry !"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
   Widget buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: getFlowerDetail(),
@@ -104,7 +147,7 @@ class UpdateFlowerPageState extends State<UpdateFlowerPage>{
           ),
           onTap: (){
             //update
-            setUpdateUI(flower);
+            checkValidUser(data,flower);
           },
         ),
       ),
@@ -116,13 +159,6 @@ class UpdateFlowerPageState extends State<UpdateFlowerPage>{
     controllerSunlight.text = flower.sunlight;
     controllerBlooms.text = flower.blooms;
     controllerSoil.text = flower.soil;
-//    Container(
-//      width: 50.0,
-//      height: 50.0,
-//      child: Image.network(
-//          flower.furl.toString(),
-//          fit: BoxFit.contain),
-//    );
     setState(() {
       showTextField = true;
       isEditing = true;

@@ -141,23 +141,23 @@ class _LoginPageState extends State<LoginPage> {
             ),
             Container(
                 child: Row(
-              children: <Widget>[
-                Text('Create account?'),
-                FlatButton(
-                  textColor: Colors.blue,
-                  child: Text(
-                    'Sign Up',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  onPressed: () {
-                    //Navigate  to signup screen
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SignupPage()));
-                  },
-                )
-              ],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ))
+                  children: <Widget>[
+                    Text('Create account?'),
+                    FlatButton(
+                      textColor: Colors.blue,
+                      child: Text(
+                        'Sign Up',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      onPressed: () {
+                        //Navigate  to signup screen
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => SignupPage()));
+                      },
+                    )
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                ))
           ],
         ));
   }
@@ -168,7 +168,7 @@ class _LoginPageState extends State<LoginPage> {
       try {
         final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
         FirebaseUser user = (await _firebaseAuth.signInWithEmailAndPassword(
-                email: _email, password: _password))
+            email: _email, password: _password))
             .user;
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => Home(user: user)));
