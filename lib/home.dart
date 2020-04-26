@@ -4,6 +4,8 @@ import 'package:learnaflower/search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:share/share.dart';
 import 'package:learnaflower/login.dart';
+import 'package:learnaflower/addflower.dart';
+import 'package:learnaflower/updateflower.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Home extends StatefulWidget {
@@ -58,7 +60,7 @@ class HomeState extends State<Home> {
             ),
             ListTile(
               title: Text(
-                'Welcome ${widget.user.email}',
+                'Welcome ${widget.user.email.split('@').removeAt(0)}',
                 style: TextStyle(
                   fontSize: 23.0,
                   fontWeight: FontWeight.bold,
@@ -104,13 +106,9 @@ class HomeState extends State<Home> {
               title: Text("Add Flower Details"),
               onTap: () {
                 //Navigate to Add Flower Details
-                /*
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Add())
-                );
-                 */
+
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AddFlowerPage()));
               },
             ),
             ListTile(
@@ -133,13 +131,11 @@ class HomeState extends State<Home> {
               title: Text("Update Flower Details"),
               onTap: () {
                 //Navigate to Update Flower Details
-                /*
+
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Update())
-                );
-                 */
+                        builder: (context) => UpdateFlowerPage()));
               },
             ),
             ListTile(

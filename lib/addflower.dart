@@ -6,6 +6,7 @@ import 'dart:io';
 import 'dart:async';
 import 'package:firebase_storage/firebase_storage.dart';
 
+/*
 void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
@@ -16,6 +17,9 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+*/
+
+
 class AddFlowerPage extends StatefulWidget {
   @override
   AddFlowerPage() : super();

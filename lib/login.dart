@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:learnaflower/home.dart';
 import 'package:flutter/material.dart';
+import 'package:learnaflower/signup.dart';
+
+import 'signup.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -135,7 +138,9 @@ class _LoginPageState extends State<LoginPage> {
                     style: TextStyle(fontSize: 20),
                   ),
                   onPressed: () {
-                    //*********signup screen
+                    //Navigate  to signup screen
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => SignupPage()));
                   },
                 )
               ],

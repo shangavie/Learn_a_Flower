@@ -49,18 +49,6 @@ class SearchState extends State<Search> {
           title: Text("FlowerSnap"),
           elevation: 20.0,
           backgroundColor: Color.fromRGBO(61, 212, 125, 100),
-          actions: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () {},
-                child: Icon(
-                  Icons.account_circle,
-                  size: 26.0,
-                ),
-              ),
-            )
-          ],
           actionsIconTheme:
               IconThemeData(size: 30.0, color: Colors.white, opacity: 100.0),
         ),

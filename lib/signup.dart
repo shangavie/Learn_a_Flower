@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+/*
 void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
@@ -12,6 +13,9 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+*/
+
+
 class SignupPage extends StatefulWidget {
   SignupPage() : super();
   SignupPageState createState() => SignupPageState();

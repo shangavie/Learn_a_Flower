@@ -8,6 +8,7 @@ import 'package:learnaflower/home.dart';
 import 'flower.dart';
 import 'api.dart';
 
+/*
 void main() => runApp(App());
 
 class App extends StatelessWidget{
@@ -18,6 +19,9 @@ class App extends StatelessWidget{
     );
   }
 }
+
+ */
+
 
 class UpdateFlowerPage extends StatefulWidget{
   UpdateFlowerPage() : super();
