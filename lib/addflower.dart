@@ -30,16 +30,18 @@ class AddFlowerPageState extends State<AddFlowerPage> {
   TextEditingController controllerSunlight = TextEditingController();
   TextEditingController controllerBlooms = TextEditingController();
   TextEditingController controllerSoil = TextEditingController();
+  TextEditingController controllerMoreDetail = TextEditingController();
   Future<File> imageFile;
   String url;
   addFlower()
   {
-    addNewFlower(controllerFlowerName.text,controllerDescription.text,url,controllerSunlight.text,controllerBlooms.text,controllerSoil.text);
+    addNewFlower(controllerFlowerName.text,controllerDescription.text,url,controllerSunlight.text,controllerBlooms.text,controllerSoil.text,controllerMoreDetail.text);
     controllerFlowerName.text='';
     controllerDescription.text='';
     controllerSunlight.text='';
     controllerBlooms.text='';
     controllerSoil.text='';
+    controllerMoreDetail.text='';
   }
 
   File sampleImage;
@@ -173,6 +175,17 @@ class AddFlowerPageState extends State<AddFlowerPage> {
                     controller: controllerSoil,
                     decoration: InputDecoration(
                       labelText: "Soil", hasFloatingPlaceholder: true,
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+                      contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    controller: controllerMoreDetail,
+                    decoration: InputDecoration(
+                      labelText: "Url", hasFloatingPlaceholder: true,
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
                       contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                     ),
