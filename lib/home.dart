@@ -60,7 +60,7 @@ class HomeState extends State<Home> {
             ),
             ListTile(
               title: Text(
-                'Welcome ${widget.user.email.split('@').removeAt(0)}',
+                'Welcome ${widget.user.email.split('@').removeAt(0).toUpperCase()}',
                 style: TextStyle(
                   fontSize: 23.0,
                   fontWeight: FontWeight.bold,
