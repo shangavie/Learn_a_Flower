@@ -41,7 +41,7 @@ class HomeState extends State<Home> {
           },
         ),
         actionsIconTheme:
-        IconThemeData(size: 30.0, color: Colors.white, opacity: 100.0),
+            IconThemeData(size: 30.0, color: Colors.white, opacity: 100.0),
       ),
       body: ListPage(),
       drawer: Drawer(
@@ -58,9 +58,12 @@ class HomeState extends State<Home> {
                 ),
               ),
             ),
+            /*
+
             ListTile(
+
               title: Text(
-                'Welcome ${widget.user.email.split('@').removeAt(0).toUpperCase()}',
+               'Welcome ${widget.user.email.split('@').removeAt(0).toUpperCase()}',
                 style: TextStyle(
                   fontSize: 23.0,
                   fontWeight: FontWeight.bold,
@@ -68,6 +71,8 @@ class HomeState extends State<Home> {
                 ),
               ),
             ),
+
+             */
             ListTile(
               leading: Icon(
                 Icons.home,
@@ -182,7 +187,8 @@ class _ListPageState extends State<ListPage> {
 
   Future getData() async {
     var firestore = Firestore.instance;
-    QuerySnapshot qn = await firestore.collection("FlowerDetail").getDocuments();
+    QuerySnapshot qn =
+        await firestore.collection("FlowerDetail").getDocuments();
     return qn.documents;
     //return await firestore.collection("flower").snapshots();
   }
@@ -192,14 +198,64 @@ class _ListPageState extends State<ListPage> {
         context,
         MaterialPageRoute(
             builder: (context) => DetailPage(
-              flower: flower,
-            )));
+                  flower: flower,
+                )));
   }
-
+/*
   deleteData(DocumentSnapshot flower) async {
     var firestore = Firestore.instance;
     await firestore.collection("FlowerDetail").document(flower.documentID).delete();
     setState(() {});
+  }
+
+ */
+
+  deleteData(DocumentSnapshot flower) async {
+    final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+    FirebaseUser user = (await _firebaseAuth.currentUser());
+
+    var uploadedBy = flower.data["uploadedBy"];
+    var loggedInUser = user.email;
+
+    if (uploadedBy == loggedInUser) {
+      var firestore = Firestore.instance;
+      await firestore
+          .collection("FlowerDetail")
+          .document(flower.documentID)
+          .delete();
+      setState(() {});
+    } else {
+      print(uploadedBy);
+      print(loggedInUser);
+      showMessage(context);
+    }
+  }
+
+  showMessage(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("FlowerSnap"),
+      content: Text("You are not authorized to remove this entry !"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   share(BuildContext context, DocumentSnapshot flower) {
@@ -302,7 +358,7 @@ class _DetailPageState extends State<DetailPage> {
         ),
         actions: <Widget>[],
         actionsIconTheme:
-        IconThemeData(size: 30.0, color: Colors.white, opacity: 100.0),
+            IconThemeData(size: 30.0, color: Colors.white, opacity: 100.0),
       ),
       body: new Padding(
         padding: new EdgeInsets.all(10.0),
@@ -312,8 +368,8 @@ class _DetailPageState extends State<DetailPage> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: 200.0,
-                child: Image.network(widget.flower.data["Url"],
-                    fit: BoxFit.fill),
+                child:
+                    Image.network(widget.flower.data["Url"], fit: BoxFit.fill),
               ),
               Text(
                 widget.flower.data["Name"],
