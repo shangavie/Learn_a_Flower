@@ -121,7 +121,13 @@ class AddFlowerPageState extends State<AddFlowerPage> {
           icon: new Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        actions: <Widget>[],
+        actions: <Widget>[
+          Image.asset(
+            'images/logo.png',
+            height: 50,
+            width: 50,
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Stack(
