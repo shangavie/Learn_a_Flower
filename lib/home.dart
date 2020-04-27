@@ -215,7 +215,7 @@ class _ListPageState extends State<ListPage> {
     final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
     FirebaseUser user = (await _firebaseAuth.currentUser());
 
-    var uploadedBy = flower.data["uploadedBy"];
+    var uploadedBy = flower.data["LoggedUser"];
     var loggedInUser = user.email;
 
     if (uploadedBy == loggedInUser) {

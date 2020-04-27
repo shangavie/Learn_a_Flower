@@ -2,8 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:learnaflower/home.dart';
 import 'package:flutter/material.dart';
 import 'package:learnaflower/signup.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:learnaflower/addflower.dart';
+
 import 'signup.dart';
 
 class LoginPage extends StatefulWidget {
@@ -15,20 +14,6 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _email, _password;
   double screenHeight;
-
-  SharedPreferences logindata;
-  bool newuser;
-  @override
-  void initState() {
-    super.initState();
-    check_if_already_login();
-  }
-
-  void check_if_already_login() async {
-    logindata = await SharedPreferences.getInstance();
-    newuser = (logindata.getBool('login') ?? true);
-    print(newuser);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,10 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
                               RaisedButton(
-                                onPressed: () {
-                                  signIn();
-                                  logindata.setString('email', _email);
-                                },
+                                onPressed: signIn,
                                 child: Text('Sign in'),
                                 color: Color.fromRGBO(61, 212, 125, 100),
                                 textColor: Colors.white,
@@ -141,23 +123,23 @@ class _LoginPageState extends State<LoginPage> {
             ),
             Container(
                 child: Row(
-                  children: <Widget>[
-                    Text('Create account?'),
-                    FlatButton(
-                      textColor: Colors.blue,
-                      child: Text(
-                        'Sign Up',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      onPressed: () {
-                        //Navigate  to signup screen
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => SignupPage()));
-                      },
-                    )
-                  ],
-                  mainAxisAlignment: MainAxisAlignment.center,
-                ))
+              children: <Widget>[
+                Text('Create account?'),
+                FlatButton(
+                  textColor: Colors.blue,
+                  child: Text(
+                    'Sign Up',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  onPressed: () {
+                    //Navigate  to signup screen
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => SignupPage()));
+                  },
+                )
+              ],
+              mainAxisAlignment: MainAxisAlignment.center,
+            ))
           ],
         ));
   }
@@ -168,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
       try {
         final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
         FirebaseUser user = (await _firebaseAuth.signInWithEmailAndPassword(
-            email: _email, password: _password))
+                email: _email, password: _password))
             .user;
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => Home(user: user)));
