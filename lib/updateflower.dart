@@ -242,6 +242,12 @@ class UpdateFlowerPageState extends State<UpdateFlowerPage>{
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
                     contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                   ),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please fill the field';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 10,
@@ -254,6 +260,12 @@ class UpdateFlowerPageState extends State<UpdateFlowerPage>{
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
                     contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                   ),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please fill the field';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 10,
@@ -266,6 +278,12 @@ class UpdateFlowerPageState extends State<UpdateFlowerPage>{
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
                     contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                   ),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please fill the field';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 10,
@@ -278,6 +296,12 @@ class UpdateFlowerPageState extends State<UpdateFlowerPage>{
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
                     contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                   ),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please fill the field';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(
                   height: 10,

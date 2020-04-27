@@ -113,12 +113,21 @@ class AddFlowerPageState extends State<AddFlowerPage> {
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
+      appBar: AppBar(
+        title: Text("FlowerSnap"),
+        elevation: 5.0,
+        backgroundColor: Color.fromRGBO(61, 212, 125, 100),
+        leading: new IconButton(
+          icon: new Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        actions: <Widget>[],
+      ),
       body: SingleChildScrollView(
         child: Stack(
           children: <Widget>[
             lowerSection(context),
             upperSection(context),
-            pageTitle(),
             addFlowerSection(context)
           ],
         ),
@@ -173,13 +182,18 @@ class AddFlowerPageState extends State<AddFlowerPage> {
                     ),
                   ),
 
-                  TextField(
+                  TextFormField(
                     controller: controllerFlowerName,
                     decoration: InputDecoration(
                         labelText: "Flower Name", hasFloatingPlaceholder: true,
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
                         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                    )
+                    ),
+                    validator: (controllerFlowerName) {
+                      if (controllerFlowerName.isEmpty) {
+                        return 'Please fill the field';
+                      }
+                    },
                   ),
                   SizedBox(
                     height: 20,
@@ -191,6 +205,11 @@ class AddFlowerPageState extends State<AddFlowerPage> {
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
                         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                     ),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please fill the field';
+                      }
+                    },
                   ),
                   SizedBox(
                     height: 20,
@@ -202,6 +221,11 @@ class AddFlowerPageState extends State<AddFlowerPage> {
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
                       contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                     ),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please fill the field';
+                      }
+                    },
                   ),
                   SizedBox(
                     height: 20,
@@ -213,6 +237,11 @@ class AddFlowerPageState extends State<AddFlowerPage> {
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
                       contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                     ),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please fill the field';
+                      }
+                    },
                   ),
                   SizedBox(
                     height: 20,
@@ -224,6 +253,11 @@ class AddFlowerPageState extends State<AddFlowerPage> {
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
                       contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                     ),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please fill the field';
+                      }
+                    },
                   ),
                   SizedBox(
                     height: 20,
@@ -284,7 +318,6 @@ class AddFlowerPageState extends State<AddFlowerPage> {
         Navigator.pop(context);
       },
     );
-
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text("FlowerSnap"),
@@ -302,26 +335,26 @@ class AddFlowerPageState extends State<AddFlowerPage> {
       },
     );
   }
-  Widget pageTitle() {
-    return Container(
-      margin: EdgeInsets.only(top: 50),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-           IconButton(
-            icon: new Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          Text(
-            "FlowerSnap",
-            style: TextStyle(
-                fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
-          )
-        ],
-      ),
-    );
-  }
+//  Widget pageTitle() {
+//    return Container(
+//      margin: EdgeInsets.only(top: 50),
+//      child: Row(
+//        crossAxisAlignment: CrossAxisAlignment.center,
+//        mainAxisAlignment: MainAxisAlignment.center,
+//        children: <Widget>[
+//           IconButton(
+//            icon: new Icon(Icons.arrow_back, color: Colors.white),
+//            onPressed: () => Navigator.of(context).pop(),
+//          ),
+//          Text(
+//            "FlowerSnap",
+//            style: TextStyle(
+//                fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
+//          )
+//        ],
+//      ),
+//    );
+//  }
   pickImageFromGallery(ImageSource source, BuildContext context) async{
     setState(() {
       imageFile = ImagePicker.pickImage(source: source);
