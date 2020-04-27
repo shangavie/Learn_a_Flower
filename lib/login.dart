@@ -2,7 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:learnaflower/home.dart';
 import 'package:flutter/material.dart';
 import 'package:learnaflower/signup.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:learnaflower/addflower.dart';
 import 'signup.dart';
 
 class LoginPage extends StatefulWidget {
@@ -15,28 +16,18 @@ class _LoginPageState extends State<LoginPage> {
   String _email, _password;
   double screenHeight;
 
-  showMessage(BuildContext context) {
-    Widget okButton = FlatButton(
-      child: Text("OK"),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
+  SharedPreferences logindata;
+  bool newuser;
+  @override
+  void initState() {
+    super.initState();
+    check_if_already_login();
+  }
 
-    AlertDialog alert = AlertDialog(
-      title: Text("FlowerSnap"),
-      content: Text("Invalid credentials ! Try again ...."),
-      actions: [
-        okButton,
-      ],
-    );
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
+  void check_if_already_login() async {
+    logindata = await SharedPreferences.getInstance();
+    newuser = (logindata.getBool('login') ?? true);
+    print(newuser);
   }
 
   @override
@@ -110,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                         TextFormField(
                           validator: (input) {
                             if (input.isEmpty) {
-                              return 'Please enter your email address';
+                              return 'Provide an email';
                             }
                           },
                           decoration: InputDecoration(labelText: 'Email'),
@@ -119,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                         TextFormField(
                           validator: (input) {
                             if (input.length < 6) {
-                              return 'Please enter the password';
+                              return 'Longer password please';
                             }
                           },
                           decoration: InputDecoration(labelText: 'Password'),
@@ -131,7 +122,10 @@ class _LoginPageState extends State<LoginPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
                               RaisedButton(
-                                onPressed: signIn,
+                                onPressed: () {
+                                  signIn();
+                                  logindata.setString('email', _email);
+                                },
                                 child: Text('Sign in'),
                                 color: Color.fromRGBO(61, 212, 125, 100),
                                 textColor: Colors.white,
@@ -147,23 +141,23 @@ class _LoginPageState extends State<LoginPage> {
             ),
             Container(
                 child: Row(
-              children: <Widget>[
-                Text('Create account?'),
-                FlatButton(
-                  textColor: Colors.blue,
-                  child: Text(
-                    'Sign Up',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  onPressed: () {
-                    //Navigate  to signup screen
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SignupPage()));
-                  },
-                )
-              ],
-              mainAxisAlignment: MainAxisAlignment.center,
-            ))
+                  children: <Widget>[
+                    Text('Create account?'),
+                    FlatButton(
+                      textColor: Colors.blue,
+                      child: Text(
+                        'Sign Up',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      onPressed: () {
+                        //Navigate  to signup screen
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => SignupPage()));
+                      },
+                    )
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                ))
           ],
         ));
   }
@@ -174,12 +168,11 @@ class _LoginPageState extends State<LoginPage> {
       try {
         final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
         FirebaseUser user = (await _firebaseAuth.signInWithEmailAndPassword(
-                email: _email, password: _password))
+            email: _email, password: _password))
             .user;
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => Home(user: user)));
       } catch (e) {
-        showMessage(context);
         print(e.message);
       }
     }
