@@ -15,6 +15,30 @@ class _LoginPageState extends State<LoginPage> {
   String _email, _password;
   double screenHeight;
 
+  showMessage(BuildContext context) {
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: Text("FlowerSnap"),
+      content: Text("Invalid credentials ! Try again ...."),
+      actions: [
+        okButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
@@ -86,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                         TextFormField(
                           validator: (input) {
                             if (input.isEmpty) {
-                              return 'Provide an email';
+                              return 'Please enter your email address';
                             }
                           },
                           decoration: InputDecoration(labelText: 'Email'),
@@ -95,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                         TextFormField(
                           validator: (input) {
                             if (input.length < 6) {
-                              return 'Longer password please';
+                              return 'Please enter the password';
                             }
                           },
                           decoration: InputDecoration(labelText: 'Password'),
@@ -155,6 +179,7 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => Home(user: user)));
       } catch (e) {
+        showMessage(context);
         print(e.message);
       }
     }

@@ -59,21 +59,6 @@ class HomeState extends State<Home> {
                 ),
               ),
             ),
-            /*
-
-            ListTile(
-
-              title: Text(
-               'Welcome ${widget.user.email.split('@').removeAt(0).toUpperCase()}',
-                style: TextStyle(
-                  fontSize: 23.0,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromRGBO(61, 212, 125, 100),
-                ),
-              ),
-            ),
-
-             */
             ListTile(
               leading: Icon(
                 Icons.home,
@@ -112,7 +97,6 @@ class HomeState extends State<Home> {
               title: Text("Add Flower Details"),
               onTap: () {
                 //Navigate to Add Flower Details
-
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => AddFlowerPage()));
               },
@@ -137,7 +121,6 @@ class HomeState extends State<Home> {
               title: Text("Update Flower Details"),
               onTap: () {
                 //Navigate to Update Flower Details
-
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -191,7 +174,6 @@ class _ListPageState extends State<ListPage> {
     QuerySnapshot qn =
         await firestore.collection("FlowerDetail").getDocuments();
     return qn.documents;
-    //return await firestore.collection("flower").snapshots();
   }
 
   navigateToDetail(DocumentSnapshot flower) {
@@ -202,14 +184,6 @@ class _ListPageState extends State<ListPage> {
                   flower: flower,
                 )));
   }
-/*
-  deleteData(DocumentSnapshot flower) async {
-    var firestore = Firestore.instance;
-    await firestore.collection("FlowerDetail").document(flower.documentID).delete();
-    setState(() {});
-  }
-
- */
 
   deleteData(DocumentSnapshot flower) async {
     final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -233,7 +207,6 @@ class _ListPageState extends State<ListPage> {
   }
 
   showMessage(BuildContext context) {
-    // set up the button
     Widget okButton = FlatButton(
       child: Text("OK"),
       onPressed: () {
@@ -241,7 +214,6 @@ class _ListPageState extends State<ListPage> {
       },
     );
 
-    // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text("FlowerSnap"),
       content: Text("You are not authorized to remove this entry !"),
@@ -250,7 +222,6 @@ class _ListPageState extends State<ListPage> {
       ],
     );
 
-    // show the dialog
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -372,20 +343,21 @@ class _DetailPageState extends State<DetailPage> {
                 child:
                     Image.network(widget.flower.data["Url"], fit: BoxFit.fill),
               ),
+              SizedBox(height: 18.0),
               Text(
                 widget.flower.data["Name"],
                 style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 18.0),
-              Container(
-                padding: EdgeInsets.fromLTRB(20, 2, 20, 10),
-                child: Text(
-                  widget.flower.data["Description"],
-                  style: TextStyle(
-                      fontSize: 13.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blueGrey),
-                ),
+              Flexible(
+                child: Container(
+                    padding: EdgeInsets.fromLTRB(20, 2, 20, 10),
+                    child: Text(widget.flower.data["Description"],
+                        style: TextStyle(
+                            fontSize: 13.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueGrey),
+                        overflow: TextOverflow.ellipsis)),
               ),
               Container(
                   padding: EdgeInsets.fromLTRB(20, 2, 20, 10),
