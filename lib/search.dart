@@ -11,31 +11,31 @@ class Search extends StatefulWidget {
 
 class SearchState extends State<Search> {
   var queryResultSet = [];
-  var tempSearchStore = [];
+  var tempFlowerSearchStore = [];
 
-  initiateSearch(value) {
-    if (value.length == 0) {
+  initiateFlowerSearch(keyword) {
+    if (keyword.length == 0) {
       setState(() {
         queryResultSet = [];
-        tempSearchStore = [];
+        tempFlowerSearchStore = [];
       });
     }
 
-    var capitalizedValue =
-        value.substring(0, 1).toUpperCase() + value.substring(1);
+    var capitalizedString =
+        keyword.substring(0, 1).toUpperCase() + keyword.substring(1);
 
-    if (queryResultSet.length == 0 && value.length == 1) {
-      SearchService().searchByName(value).then((QuerySnapshot docs) {
+    if (queryResultSet.length == 0 && keyword.length == 1) {
+      SearchService().searchFlowerByName(keyword).then((QuerySnapshot docs) {
         for (int i = 0; i < docs.documents.length; ++i) {
           queryResultSet.add(docs.documents[i].data);
         }
       });
     } else {
-      tempSearchStore = [];
+      tempFlowerSearchStore = [];
       queryResultSet.forEach((element) {
-        if (element['Name'].startsWith(capitalizedValue)) {
+        if (element['Name'].startsWith(capitalizedString)) {
           setState(() {
-            tempSearchStore.add(element);
+            tempFlowerSearchStore.add(element);
           });
         }
       });
@@ -57,7 +57,7 @@ class SearchState extends State<Search> {
             padding: const EdgeInsets.all(10.0),
             child: TextField(
               onChanged: (val) {
-                initiateSearch(val);
+                initiateFlowerSearch(val);
               },
               decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(left: 25.0),
@@ -70,11 +70,9 @@ class SearchState extends State<Search> {
           GridView.count(
               padding: EdgeInsets.only(left: 10.0, right: 10.0),
               crossAxisCount: 1,
-              //crossAxisSpacing: 4.0,
-              //mainAxisSpacing: 4.0,
               primary: false,
               shrinkWrap: true,
-              children: tempSearchStore.map((element) {
+              children: tempFlowerSearchStore.map((element) {
                 return buildResultCard(element);
               }).toList())
         ]));
@@ -187,70 +185,4 @@ Widget buildResultCard(data) {
           ),
         ],
       )));
-
-  /*
-  return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      elevation: 2.0,
-      child: Container(
-        child: new Column(
-          children: <Widget>[
-            Container(
-              width: 300.0, //MediaQuery.of(context).size.width,
-              height: 200.0,
-              child: Image.network(data["image"], fit: BoxFit.fill),
-            ),
-            Center(
-                child: Container(
-                    padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
-                    child: Text(data["name"],
-                        style: TextStyle(
-                            fontSize: 20.0, fontWeight: FontWeight.bold)))),
-            Container(
-                padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
-                child: Text(
-                  data["description"],
-                  style: TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blueGrey),
-                )),
-          ],
-        ),
-      )
-  );
-*/
-
-  /*
-  return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      elevation: 2.0,
-      child: Container(
-        child: new Column(
-          children: <Widget>[
-            Container(
-              width: 300.0, //MediaQuery.of(context).size.width,
-              height: 200.0,
-              child: Image.network(data["image"], fit: BoxFit.fill),
-            ),
-            Center(
-                child: Container(
-                    padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
-                    child: Text(data["name"],
-                        style: TextStyle(
-                            fontSize: 20.0, fontWeight: FontWeight.bold)))),
-            Container(
-                padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
-                child: Text(
-                  data["description"],
-                  style: TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blueGrey),
-                )),
-          ],
-        ),
-      ));
-
-   */
 }

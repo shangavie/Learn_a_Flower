@@ -7,6 +7,7 @@ import 'package:learnaflower/login.dart';
 import 'package:learnaflower/addflower.dart';
 import 'package:learnaflower/updateflower.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:learnaflower/about.dart';
 
 class Home extends StatefulWidget {
   const Home({Key key, this.user}) : super(key: key);
@@ -135,13 +136,11 @@ class HomeState extends State<Home> {
               title: Text("About"),
               onTap: () {
                 //Navigate to About
-                /*
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => About())
                 );
-                 */
               },
             ),
             ListTile(
