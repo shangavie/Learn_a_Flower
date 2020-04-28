@@ -1,6 +1,7 @@
 import 'package:learnaflower/home.dart';
 import 'package:flutter/material.dart';
 import 'package:learnaflower/login.dart';
+import 'package:learnaflower/welcomescreen.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginPage(),
+      home: WelcomeScreen(),
     );
   }
 }
