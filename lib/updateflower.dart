@@ -68,37 +68,10 @@ class UpdateFlowerPageState extends State<UpdateFlowerPage>{
     }
     catch(e)
     {
-      showErrorMessage(context);
+      
     }
     }
   showAlertMessage(BuildContext context) {
-    // set up the button
-    Widget okButton = FlatButton(
-      child: Text("OK"),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("FlowerSnap"),
-      content: Text("You are not authorized to edit this entry !"),
-      actions: [
-        okButton,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
-  showErrorMessage(BuildContext context) {
     // set up the button
     Widget okButton = FlatButton(
       child: Text("OK"),
