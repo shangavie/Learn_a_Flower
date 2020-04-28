@@ -29,6 +29,15 @@ updateFlowerDetails(Flower flower, String newDescription,String newSunlight, Str
   }
 }
 
+Future getData() async {
+  var firestore = Firestore.instance;
+  QuerySnapshot qn =
+  await firestore.collection(collectionName2).getDocuments();
+  return qn.documents;
+}
+
+
 getFlowerDetail() {
   return Firestore.instance.collection(collectionName2).snapshots();
 }
+

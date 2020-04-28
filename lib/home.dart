@@ -8,6 +8,7 @@ import 'package:learnaflower/addflower.dart';
 import 'package:learnaflower/updateflower.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:learnaflower/about.dart';
+import 'api.dart';
 
 class Home extends StatefulWidget {
   const Home({Key key, this.user}) : super(key: key);
@@ -202,13 +203,6 @@ class ListPage extends StatefulWidget {
 class _ListPageState extends State<ListPage> {
   Future _data;
 
-  Future getData() async {
-    var firestore = Firestore.instance;
-    QuerySnapshot qn =
-        await firestore.collection("FlowerDetail").getDocuments();
-    return qn.documents;
-  }
-
   navigateToDetail(DocumentSnapshot flower) {
     Navigator.push(
         context,
@@ -232,14 +226,16 @@ class _ListPageState extends State<ListPage> {
           .document(flower.documentID)
           .delete();
       setState(() {});
+      showMessage(context, "OK", "The entry has been deleted successfully !");
     } else {
-      showMessage(context);
+      showMessage(
+          context, "OK", "You are not authorized to remove this entry !");
     }
   }
 
-  showMessage(BuildContext context) {
+  showMessage(BuildContext context, String buttonText, String message) {
     Widget okButton = FlatButton(
-      child: Text("OK"),
+      child: Text(buttonText),
       onPressed: () {
         Navigator.pop(context);
       },
@@ -247,7 +243,7 @@ class _ListPageState extends State<ListPage> {
 
     AlertDialog alert = AlertDialog(
       title: Text("FlowerSnap"),
-      content: Text("You are not authorized to remove this entry !"),
+      content: Text(message),
       actions: [
         okButton,
       ],
@@ -368,28 +364,29 @@ class _DetailPageState extends State<DetailPage> {
         child: new Card(
           child: new Column(
             children: <Widget>[
+              SizedBox(height: 18.0),
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: 200.0,
                 child:
                     Image.network(widget.flower.data["Url"], fit: BoxFit.fill),
               ),
-              SizedBox(height: 18.0),
+              SizedBox(height: 20.0),
               Text(
                 widget.flower.data["Name"],
                 style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 18.0),
-              Flexible(
-                child: Container(
-                    padding: EdgeInsets.fromLTRB(20, 2, 20, 10),
-                    child: Text(widget.flower.data["Description"],
-                        style: TextStyle(
-                            fontSize: 13.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blueGrey),
-                        overflow: TextOverflow.ellipsis)),
-              ),
+              Container(
+                  padding: EdgeInsets.fromLTRB(20, 2, 20, 10),
+                  child: Text(
+                    widget.flower.data["Description"],
+                    style: TextStyle(
+                        fontSize: 13.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blueGrey),
+                  )),
+              SizedBox(height: 18.0),
               Container(
                   padding: EdgeInsets.fromLTRB(20, 2, 20, 10),
                   child: Row(
@@ -400,15 +397,15 @@ class _DetailPageState extends State<DetailPage> {
                           child: Icon(Icons.wb_sunny,
                               color: Colors.white, size: 30.0),
                         ),
-                        Flexible(
-                          child: Text(widget.flower.data["Sunlight"],
-                              style: TextStyle(
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.blueGrey),
-                              overflow: TextOverflow.ellipsis),
+                        Text(
+                          widget.flower.data["Sunlight"],
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueGrey),
                         ),
                       ])),
+              SizedBox(height: 18.0),
               Container(
                   padding: EdgeInsets.fromLTRB(20, 2, 20, 10),
                   child: Row(
@@ -419,15 +416,15 @@ class _DetailPageState extends State<DetailPage> {
                           child: Icon(Icons.filter_hdr,
                               color: Colors.white, size: 30.0),
                         ),
-                        Flexible(
-                          child: Text(widget.flower.data["Soil"],
-                              style: TextStyle(
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.blueGrey),
-                              overflow: TextOverflow.ellipsis),
+                        Text(
+                          widget.flower.data["Soil"],
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueGrey),
                         ),
                       ])),
+              SizedBox(height: 18.0),
               Container(
                   padding: EdgeInsets.fromLTRB(20, 2, 20, 10),
                   child: Row(
@@ -438,15 +435,15 @@ class _DetailPageState extends State<DetailPage> {
                           child: Icon(Icons.local_florist,
                               color: Colors.white, size: 30.0),
                         ),
-                        Flexible(
-                          child: Text(widget.flower.data["Blooms"],
-                              style: TextStyle(
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.blueGrey),
-                              overflow: TextOverflow.ellipsis),
+                        Text(
+                          widget.flower.data["Blooms"],
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueGrey),
                         ),
                       ])),
+              SizedBox(height: 30.0),
               RaisedButton(
                 color: Colors.amber,
                 onPressed: () async {
