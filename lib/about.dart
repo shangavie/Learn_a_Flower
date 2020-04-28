@@ -69,7 +69,11 @@ class AboutState extends State<About> {
       ),
       body: ListView(
         children: <Widget>[
-          SizedBox(height: 8.0),
+          SizedBox(height: 18.0),
+          ListTile(
+              title: Text(
+                  'FlowerSnap - A mobile application to learn about flowers')),
+          SizedBox(height: 18.0),
           ListTile(
             title: Text(
                 'FlowerSnap consolidates a list of flowers along with flower names, a brief description, a photo, and some guidance for those of you who are interested in gardening.'),
