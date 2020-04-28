@@ -114,20 +114,59 @@ class AddFlowerPageState extends State<AddFlowerPage> {
     screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        title: Text("FlowerSnap"),
         elevation: 5.0,
         backgroundColor: Color.fromRGBO(61, 212, 125, 100),
-        leading: new IconButton(
-          icon: new Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
+
+
+        title: Row(
+          children: <Widget>[
+            SizedBox(
+              width: 15,
+            ),
+            Container(
+                margin: EdgeInsets.fromLTRB(0, 8, 10, 8),
+                child: CircleAvatar(
+                  backgroundImage: ExactAssetImage('images/logo.png'),
+                  radius: 25.0,
+                ),
+                decoration: new BoxDecoration(
+                  border: new Border.all(
+                    color: Colors.pink,
+                    width: 1.0,
+                  ),
+                  borderRadius: new BorderRadius.all(new Radius.circular(50.0)),
+                )),
+            Container(
+              //margin: EdgeInsets.fromLTRB(0, 0, 130, 0),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        'FlowerSnap',
+                        style: TextStyle(fontSize: 25.0, fontFamily: 'Lobster'),
+                      ),
+                    ),
+                    SizedBox(height: 4.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: Colors.white,
+                          size: 12.0,
+                        ),
+                        SizedBox(width: 4.0),
+                        Text('Learn Flower Details',
+                            style: TextStyle(fontSize: 12.0))
+                      ],
+                    ),
+                  ]),
+            )
+          ],
         ),
-        actions: <Widget>[
-          Image.asset(
-            'images/logo.png',
-            height: 50,
-            width: 50,
-          ),
-        ],
+
       ),
       body: SingleChildScrollView(
         child: Stack(

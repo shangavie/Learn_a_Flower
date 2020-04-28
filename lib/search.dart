@@ -46,9 +46,58 @@ class SearchState extends State<Search> {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: AppBar(
-          title: Text("FlowerSnap"),
           elevation: 20.0,
           backgroundColor: Color.fromRGBO(61, 212, 125, 100),
+          title: Row(
+            children: <Widget>[
+              SizedBox(
+                width: 15,
+              ),
+              Container(
+                  margin: EdgeInsets.fromLTRB(0, 8, 10, 8),
+                  child: CircleAvatar(
+                    backgroundImage: ExactAssetImage('images/logo.png'),
+                    radius: 25.0,
+                  ),
+                  decoration: new BoxDecoration(
+                    border: new Border.all(
+                      color: Colors.pink,
+                      width: 1.0,
+                    ),
+                    borderRadius:
+                        new BorderRadius.all(new Radius.circular(50.0)),
+                  )),
+              Container(
+                //margin: EdgeInsets.fromLTRB(0, 0, 130, 0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          'FlowerSnap',
+                          style:
+                              TextStyle(fontSize: 25.0, fontFamily: 'Lobster'),
+                        ),
+                      ),
+                      SizedBox(height: 4.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.white,
+                            size: 12.0,
+                          ),
+                          SizedBox(width: 4.0),
+                          Text('Learn Flower Details',
+                              style: TextStyle(fontSize: 12.0))
+                        ],
+                      ),
+                    ]),
+              )
+            ],
+          ),
           actionsIconTheme:
               IconThemeData(size: 30.0, color: Colors.white, opacity: 100.0),
         ),

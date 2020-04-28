@@ -33,14 +33,62 @@ class HomeState extends State<Home> {
       resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('FlowerSnap'),
-        elevation: 20.0,
+        titleSpacing: 0.0,
+        elevation: 5.0,
         backgroundColor: Color.fromRGBO(61, 212, 125, 100),
         leading: IconButton(
           icon: Icon(Icons.menu),
           onPressed: () {
             _scaffoldKey.currentState.openDrawer();
           },
+        ),
+        title: Row(
+          children: <Widget>[
+            SizedBox(
+              width: 15,
+            ),
+            Container(
+                margin: EdgeInsets.fromLTRB(0, 8, 10, 8),
+                child: CircleAvatar(
+                  backgroundImage: ExactAssetImage('images/logo.png'),
+                  radius: 25.0,
+                ),
+                decoration: new BoxDecoration(
+                  border: new Border.all(
+                    color: Colors.pink,
+                    width: 1.0,
+                  ),
+                  borderRadius: new BorderRadius.all(new Radius.circular(50.0)),
+                )),
+            Container(
+              //margin: EdgeInsets.fromLTRB(0, 0, 130, 0),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        'FlowerSnap',
+                        style: TextStyle(fontSize: 25.0, fontFamily: 'Lobster'),
+                      ),
+                    ),
+                    SizedBox(height: 4.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: Colors.white,
+                          size: 12.0,
+                        ),
+                        SizedBox(width: 4.0),
+                        Text('Learn Flower Details',
+                            style: TextStyle(fontSize: 12.0))
+                      ],
+                    ),
+                  ]),
+            )
+          ],
         ),
         actionsIconTheme:
             IconThemeData(size: 30.0, color: Colors.white, opacity: 100.0),
@@ -60,6 +108,7 @@ class HomeState extends State<Home> {
                 ),
               ),
             ),
+            SizedBox(height: 11.0),
             ListTile(
               leading: Icon(
                 Icons.home,
@@ -73,23 +122,7 @@ class HomeState extends State<Home> {
                     context, MaterialPageRoute(builder: (context) => Home()));
               },
             ),
-            ListTile(
-              leading: Icon(
-                Icons.account_circle,
-                color: Color.fromRGBO(61, 212, 125, 100),
-              ),
-              title: Text("My Profile"),
-              onTap: () {
-                //Navigate to My Profile
-                /*
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => View())
-                );
-                 */
-              },
-            ),
+            SizedBox(height: 18.0),
             ListTile(
               leading: Icon(
                 Icons.local_florist,
@@ -102,6 +135,7 @@ class HomeState extends State<Home> {
                     MaterialPageRoute(builder: (context) => AddFlowerPage()));
               },
             ),
+            SizedBox(height: 18.0),
             ListTile(
               leading: Icon(
                 Icons.search,
@@ -114,6 +148,7 @@ class HomeState extends State<Home> {
                     context, MaterialPageRoute(builder: (context) => Search()));
               },
             ),
+            SizedBox(height: 18.0),
             ListTile(
               leading: Icon(
                 Icons.update,
@@ -128,6 +163,7 @@ class HomeState extends State<Home> {
                         builder: (context) => UpdateFlowerPage()));
               },
             ),
+            SizedBox(height: 18.0),
             ListTile(
               leading: Icon(
                 Icons.info,
@@ -137,12 +173,10 @@ class HomeState extends State<Home> {
               onTap: () {
                 //Navigate to About
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => About())
-                );
+                    context, MaterialPageRoute(builder: (context) => About()));
               },
             ),
+            SizedBox(height: 18.0),
             ListTile(
               leading: Icon(
                 Icons.power_settings_new,
@@ -199,8 +233,6 @@ class _ListPageState extends State<ListPage> {
           .delete();
       setState(() {});
     } else {
-      print(uploadedBy);
-      print(loggedInUser);
       showMessage(context);
     }
   }
