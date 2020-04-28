@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'api.dart';
@@ -52,6 +51,7 @@ class AddFlowerPageState extends State<AddFlowerPage> {
   }
   addFlower()
   {
+ try{
     addNewFlower(controllerFlowerName.text,controllerDescription.text,url,controllerSunlight.text,controllerBlooms.text,controllerSoil.text,controllerMoreDetail.text,loggedEmail, controllerFlowerName.text[0]);
     controllerFlowerName.text='';
     controllerDescription.text='';
@@ -59,6 +59,13 @@ class AddFlowerPageState extends State<AddFlowerPage> {
     controllerBlooms.text='';
     controllerSoil.text='';
     controllerMoreDetail.text='';
+    showMessage(context);
+    }
+    catch(e)
+    {
+      showErrorMessage2();
+    }
+
   }
 
   File sampleImage;
@@ -234,11 +241,6 @@ class AddFlowerPageState extends State<AddFlowerPage> {
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
                         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                     ),
-                    validator: (controllerFlowerName) {
-                      if (controllerFlowerName.isEmpty) {
-                        return 'Please fill the field';
-                      }
-                    },
                   ),
                   SizedBox(
                     height: 20,
@@ -250,11 +252,6 @@ class AddFlowerPageState extends State<AddFlowerPage> {
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
                         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                     ),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please fill the field';
-                      }
-                    },
                   ),
                   SizedBox(
                     height: 20,
@@ -266,11 +263,6 @@ class AddFlowerPageState extends State<AddFlowerPage> {
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
                       contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                     ),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please fill the field';
-                      }
-                    },
                   ),
                   SizedBox(
                     height: 20,
@@ -282,11 +274,6 @@ class AddFlowerPageState extends State<AddFlowerPage> {
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
                       contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                     ),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please fill the field';
-                      }
-                    },
                   ),
                   SizedBox(
                     height: 20,
@@ -298,11 +285,6 @@ class AddFlowerPageState extends State<AddFlowerPage> {
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
                       contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                     ),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please fill the field';
-                      }
-                    },
                   ),
                   SizedBox(
                     height: 20,
@@ -321,28 +303,37 @@ class AddFlowerPageState extends State<AddFlowerPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      FlatButton(
+                      RaisedButton(
                         child: Text("UPLOAD"),
                         color: Color.fromRGBO(61, 212, 125, 100),
                         textColor: Colors.white,
                         padding: EdgeInsets.only(
                             left: 38, right: 38, top: 15, bottom: 15),
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30)),
+                            borderRadius: BorderRadius.circular(5)),
                         onPressed: () async{
-                          //final StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child('myimage.jpg');
-                          final FirebaseStorage _storage = FirebaseStorage(storageBucket: 'gs://lab4-db.appspot.com');
-                          //final StorageUploadTask task = firebaseStorageRef.putFile(sampleImage);
-                          String filePath = 'images/${DateTime.now()}.png';
-                          StorageUploadTask _uploadTask= _storage.ref().child(filePath).putFile(sampleImage);
-                          var dowurl = await (await _uploadTask.onComplete).ref.getDownloadURL();
-                          url = dowurl.toString();
-                          addFlower();
-                          print(url);
-                        setState(() {
-                          showTextField = false;
-                        });
-                          showMessage(context);
+                          try {
+                            //final StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child('myimage.jpg');
+                            final FirebaseStorage _storage = FirebaseStorage(
+                                storageBucket: 'gs://lab4-db.appspot.com');
+                            //final StorageUploadTask task = firebaseStorageRef.putFile(sampleImage);
+                            String filePath = 'images/${DateTime.now()}.png';
+                            StorageUploadTask _uploadTask = _storage.ref()
+                                .child(filePath)
+                                .putFile(sampleImage);
+                            var dowurl = await (await _uploadTask.onComplete)
+                                .ref.getDownloadURL();
+                            url = dowurl.toString();
+                            addFlower();
+                            print(url);
+                            setState(() {
+                              showTextField = false;
+                            });
+                          }
+                          catch(e)
+                          {
+                            showErrorMessage(context);
+                          }
                         },
                       )
                     ],
@@ -380,26 +371,59 @@ class AddFlowerPageState extends State<AddFlowerPage> {
       },
     );
   }
-//  Widget pageTitle() {
-//    return Container(
-//      margin: EdgeInsets.only(top: 50),
-//      child: Row(
-//        crossAxisAlignment: CrossAxisAlignment.center,
-//        mainAxisAlignment: MainAxisAlignment.center,
-//        children: <Widget>[
-//           IconButton(
-//            icon: new Icon(Icons.arrow_back, color: Colors.white),
-//            onPressed: () => Navigator.of(context).pop(),
-//          ),
-//          Text(
-//            "FlowerSnap",
-//            style: TextStyle(
-//                fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
-//          )
-//        ],
-//      ),
-//    );
-//  }
+
+  showErrorMessage(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("FlowerSnap"),
+      content: Text("Image is not inserted. Please insert the image!"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showErrorMessage2() {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("FlowerSnap"),
+      content: Text("Please fill all the fields!"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   pickImageFromGallery(ImageSource source, BuildContext context) async{
     setState(() {
       imageFile = ImagePicker.pickImage(source: source);

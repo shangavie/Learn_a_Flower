@@ -1,11 +1,8 @@
 import 'dart:io';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:learnaflower/home.dart';
 import 'flower.dart';
 import 'api.dart';
 
@@ -53,6 +50,7 @@ class UpdateFlowerPageState extends State<UpdateFlowerPage>{
     }
   }
   update()  {
+    try {
       if (isEditing) {
         updateFlowerDetails(
             updateflower, controllerDescription.text, controllerSunlight.text,
@@ -66,20 +64,13 @@ class UpdateFlowerPageState extends State<UpdateFlowerPage>{
       controllerSunlight.text = '';
       controllerBlooms.text = '';
       controllerSoil.text = '';
+      showMessage(context);
     }
-
-//    if(isEditing){
-//      updateFlowerDetails(updateflower, controllerDescription.text,controllerSunlight.text,controllerBlooms.text,controllerSoil.text);
-//      setState(() {
-//        isEditing=false;
-//      });
-//    }
-//    controllerFlowerName.text = '';
-//    controllerDescription.text = '';
-//    controllerSunlight.text='';
-//    controllerBlooms.text='';
-//    controllerSoil.text='';
-
+    catch(e)
+    {
+      showErrorMessage(context);
+    }
+    }
   showAlertMessage(BuildContext context) {
     // set up the button
     Widget okButton = FlatButton(
@@ -106,6 +97,34 @@ class UpdateFlowerPageState extends State<UpdateFlowerPage>{
       },
     );
   }
+
+  showErrorMessage(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("FlowerSnap"),
+      content: Text("You are not authorized to edit this entry !"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   Widget buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: getFlowerDetail(),
@@ -249,7 +268,8 @@ class UpdateFlowerPageState extends State<UpdateFlowerPage>{
         ),
 
       ),
-      body: Container(
+      body: Form(
+        child:Container(
         decoration: BoxDecoration(
           image: DecorationImage(
             image: NetworkImage('https://lh3.googleusercontent.com/proxy/xc5VEvWkaw97-1-krACJOc4yrmifxhw_Pr4Y0Wg0BQ_S8JVPj5bDLcf5GDSBL6ruZunRf4kms57Ek5K0_KTV9c7HMb0GuaEqkvCTsuw73EChM24e87sbI6O7oPkE3syYyjH47rm5qUzi406k2yAP'),
@@ -351,21 +371,19 @@ class UpdateFlowerPageState extends State<UpdateFlowerPage>{
                 SizedBox(
                   height: 10,
                 ),
-                FlatButton(
+                RaisedButton(
                   child: Text("UPDATE"),
                   color: Color.fromRGBO(61, 212, 125, 100),
                   textColor: Colors.white,
                   padding: EdgeInsets.only(
                       left: 38, right: 38, top: 15, bottom: 15),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)),
+                      borderRadius: BorderRadius.circular(5)),
                   onPressed: (){
                     update();
                     setState(() {
                       showTextField = false;
                     });
-                    showMessage(context);
-                      //Navigator.of(context).pop();
                   },
                 ),
               ],
@@ -376,6 +394,7 @@ class UpdateFlowerPageState extends State<UpdateFlowerPage>{
             ),
           ],
         ),
+      ),
       ),
     );
   }
