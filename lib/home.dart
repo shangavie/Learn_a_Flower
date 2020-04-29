@@ -6,6 +6,7 @@ import 'package:share/share.dart';
 import 'package:learnaflower/login.dart';
 import 'package:learnaflower/addflower.dart';
 import 'package:learnaflower/updateflower.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:learnaflower/about.dart';
 import 'api.dart';
@@ -27,7 +28,21 @@ _signOut(BuildContext context) async {
 
 class HomeState extends State<Home> {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
+  SharedPreferences logindata;
+  String loggedEmail;
 
+  @override
+  void initState() {
+    super.initState();
+    initial();
+  }
+  //Store logged user's username(email)
+  void initial() async {
+    logindata = await SharedPreferences.getInstance();
+    setState(() {
+      loggedEmail = logindata.getString('email');
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -109,7 +124,15 @@ class HomeState extends State<Home> {
                 ),
               ),
             ),
-            SizedBox(height: 11.0),
+            SizedBox(height: 1.0),
+            ListTile(
+//              leading: Icon(
+//                Icons.home,
+//                color: Color.fromRGBO(61, 212, 125, 100),
+//              ),
+              title: Text("Welcome to FlowerSnap"+" " + loggedEmail,style: TextStyle(fontSize: 15.0, fontFamily: 'Lobster'),),
+            ),
+            SizedBox(height: 1.0),
             ListTile(
               leading: Icon(
                 Icons.home,

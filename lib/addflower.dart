@@ -297,7 +297,7 @@ class AddFlowerPageState extends State<AddFlowerPage> {
                   TextFormField(
                     controller: controllerMoreDetail,
                     decoration: InputDecoration(
-                      labelText: "Url", hasFloatingPlaceholder: true,
+                      labelText: "Url for more details", hasFloatingPlaceholder: true,
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
                       contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                     ),
