@@ -53,13 +53,13 @@ class AddFlowerPageState extends State<AddFlowerPage> {
   {
  try{
     addNewFlower(controllerFlowerName.text,controllerDescription.text,url,controllerSunlight.text,controllerBlooms.text,controllerSoil.text,controllerMoreDetail.text,loggedEmail, controllerFlowerName.text[0]);
+    showMessage(context);
     controllerFlowerName.text='';
     controllerDescription.text='';
     controllerSunlight.text='';
     controllerBlooms.text='';
     controllerSoil.text='';
     controllerMoreDetail.text='';
-    showMessage(context);
     }
     catch(e)
     {

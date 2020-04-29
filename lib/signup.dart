@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:email_validator/email_validator.dart';
+
+import 'login.dart';
 void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
@@ -31,7 +33,8 @@ class SignupPageState extends State<SignupPage> {
       {
           FirebaseUser user = (await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password)).user;
           user.sendEmailVerification();
-          Navigator.of(context).pop();
+          showSuccessMessage(context);
+         // Navigator.of(context).pop();
       }
       catch(e)
     {
@@ -144,26 +147,26 @@ class SignupPageState extends State<SignupPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      FlatButton(
+                      RaisedButton(
                         child: Text("CANCEL"),
-                        color: Color.fromRGBO(61, 212, 125, 100),
-                        textColor: Colors.white,
+                          color: Color.fromRGBO(61, 212, 125, 100),
+                          textColor: Colors.white,
                         padding: EdgeInsets.only(
                             left: 38, right: 38, top: 15, bottom: 15),
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
+                            borderRadius: BorderRadius.circular(5)),
                         onPressed: () {
                           Navigator.of(context).pop();
                         }
                       ),
-                      FlatButton(
+                      RaisedButton(
                           child: Text("SIGN UP"),
                           color:Color.fromRGBO(61, 212, 125, 100),
                           textColor: Colors.white,
                           padding: EdgeInsets.only(
                               left: 38, right: 38, top: 15, bottom: 15),
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
+                              borderRadius: BorderRadius.circular(5)),
                           onPressed: () {
                             Signup();
                           }
@@ -176,6 +179,32 @@ class SignupPageState extends State<SignupPage> {
           ),
         ),
       ],
+    );
+  }
+
+  showSuccessMessage(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("FlowerSnap"),
+      content: Text("Your account is created successfully! Welcome to the FlowerSnap"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }
