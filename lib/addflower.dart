@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:image_picker/image_picker.dart'; //To pick image from gallery and camera
 import 'package:flutter/material.dart';
 import 'api.dart';
 import 'dart:io';
 import 'dart:async';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_storage/firebase_storage.dart'; // to store images in firebase storage
+import 'package:shared_preferences/shared_preferences.dart'; // to store loggeg user detail
 
 void main() => runApp(MyApp());
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -17,21 +18,24 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 class AddFlowerPage extends StatefulWidget {
   @override
   AddFlowerPage() : super();
   AddFlowerPageState createState() => AddFlowerPageState();
 }
-class AddFlowerPageState extends State<AddFlowerPage> {
 
+class AddFlowerPageState extends State<AddFlowerPage> {
   double screenHeight;
   bool showTextField = false;
+  //Initialize controllers
   TextEditingController controllerFlowerName = TextEditingController();
   TextEditingController controllerDescription = TextEditingController();
   TextEditingController controllerSunlight = TextEditingController();
   TextEditingController controllerBlooms = TextEditingController();
   TextEditingController controllerSoil = TextEditingController();
   TextEditingController controllerMoreDetail = TextEditingController();
+
   Future<File> imageFile;
   String url, searchKey, loggedUser;
   SharedPreferences logindata;
@@ -39,16 +43,17 @@ class AddFlowerPageState extends State<AddFlowerPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     initial();
   }
+  //Store logged user's username(email)
   void initial() async {
     logindata = await SharedPreferences.getInstance();
     setState(() {
       loggedEmail = logindata.getString('email');
     });
   }
+
   addFlower()
   {
  try{
@@ -69,7 +74,6 @@ class AddFlowerPageState extends State<AddFlowerPage> {
   }
 
   File sampleImage;
-
   Future getImage() async {
     var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
 
@@ -123,8 +127,6 @@ class AddFlowerPageState extends State<AddFlowerPage> {
       appBar: AppBar(
         elevation: 5.0,
         backgroundColor: Color.fromRGBO(61, 212, 125, 100),
-
-
         title: Row(
           children: <Widget>[
             SizedBox(
@@ -186,6 +188,7 @@ class AddFlowerPageState extends State<AddFlowerPage> {
       ),
     );
   }
+  //Design for top section of add flower screen
   Widget upperSection(BuildContext context) {
     return Container(
       height: screenHeight / 2,
@@ -195,6 +198,7 @@ class AddFlowerPageState extends State<AddFlowerPage> {
       ),
     );
   }
+  //Design for bottom section of add flower screen
   Widget lowerSection(BuildContext context) {
     return Align(
       alignment: Alignment.bottomCenter,
@@ -204,6 +208,7 @@ class AddFlowerPageState extends State<AddFlowerPage> {
       ),
     );
   }
+  //add flower detail form design
   Widget addFlowerSection(BuildContext context) {
     return Column(
       children: <Widget>[
@@ -313,16 +318,15 @@ class AddFlowerPageState extends State<AddFlowerPage> {
                             borderRadius: BorderRadius.circular(5)),
                         onPressed: () async{
                           try {
-                            //final StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child('myimage.jpg');
-                            final FirebaseStorage _storage = FirebaseStorage(
-                                storageBucket: 'gs://lab4-db.appspot.com');
-                            //final StorageUploadTask task = firebaseStorageRef.putFile(sampleImage);
+                            //Define the firebase storage link
+                            final FirebaseStorage _storage = FirebaseStorage(storageBucket: 'gs://lab4-db.appspot.com');
+                            //Define file path and use current datetime as image name
                             String filePath = 'images/${DateTime.now()}.png';
-                            StorageUploadTask _uploadTask = _storage.ref()
-                                .child(filePath)
-                                .putFile(sampleImage);
-                            var dowurl = await (await _uploadTask.onComplete)
-                                .ref.getDownloadURL();
+                            //Store the image to firebase storage
+                            StorageUploadTask _uploadTask = _storage.ref().child(filePath).putFile(sampleImage);
+                            //Get the url of the uploaded image
+                            var dowurl = await (await _uploadTask.onComplete).ref.getDownloadURL();
+                            //store the uploaded image url as string for further usage
                             url = dowurl.toString();
                             addFlower();
                             print(url);
@@ -354,7 +358,7 @@ class AddFlowerPageState extends State<AddFlowerPage> {
         Navigator.pop(context);
       },
     );
-    // set up the AlertDialog
+    // set up the SuccessDialog
     AlertDialog alert = AlertDialog(
       title: Text("FlowerSnap"),
       content: Text("Flower detail is uploaded successfully!"),
@@ -380,7 +384,7 @@ class AddFlowerPageState extends State<AddFlowerPage> {
         Navigator.pop(context);
       },
     );
-    // set up the AlertDialog
+    // set up the ErrorDialog
     AlertDialog alert = AlertDialog(
       title: Text("FlowerSnap"),
       content: Text("Image is not inserted. Please insert the image!"),
@@ -406,7 +410,7 @@ class AddFlowerPageState extends State<AddFlowerPage> {
         Navigator.pop(context);
       },
     );
-    // set up the AlertDialog
+    // set up the ErrorDialog
     AlertDialog alert = AlertDialog(
       title: Text("FlowerSnap"),
       content: Text("Please fill all the fields!"),
@@ -424,18 +428,23 @@ class AddFlowerPageState extends State<AddFlowerPage> {
     );
   }
 
+//Select image from gallery
   pickImageFromGallery(ImageSource source, BuildContext context) async{
     setState(() {
       imageFile = ImagePicker.pickImage(source: source);
     });
     Navigator.of(context).pop();
   }
+
+  //Capture image using camera
   pickImageFromCamera(ImageSource source, BuildContext context) async{
     setState(() {
       imageFile = ImagePicker.pickImage(source: source);
     });
     Navigator.of(context).pop();
   }
+
+  //show the selected or captured image in the screen
   Widget showImage() {
     return FutureBuilder<File>(
       future: imageFile,

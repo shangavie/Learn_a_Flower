@@ -24,31 +24,35 @@ class UpdateFlowerPage extends StatefulWidget{
 
 class UpdateFlowerPageState extends State<UpdateFlowerPage>{
   bool showTextField = false;
+  //Initialize controllers
   TextEditingController controllerFlowerName = TextEditingController();
   TextEditingController controllerDescription= new TextEditingController();
   TextEditingController controllerSunlight= new TextEditingController();
   TextEditingController controllerBlooms= new TextEditingController();
   TextEditingController controllerSoil= new TextEditingController();
+
   bool isEditing = false;
-  //String url;
   Flower updateflower;
   Future<File> imageFile;
   var uploadedBy;
+  //Check the user who looged to the system with the user who add the flowers to the application.
   checkValidUser(DocumentSnapshot flower,Flower flower1)
   async {
     final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
     FirebaseUser user = (await _firebaseAuth.currentUser());
     var uploadedBy = flower.data["LoggedUser"];
     var loggedInUser = user.email;
-    if (uploadedBy == loggedInUser) {
+
+    if (uploadedBy == loggedInUser) { //if the user who upload the flower and logged user both are same then allowed to update
       setUpdateUI(flower1);
     }
-    else {
+    else { //If not display the alert message
       print(uploadedBy);
       print(loggedInUser);
       showAlertMessage(context);
     }
   }
+
   update()  {
     try {
       if (isEditing) {
@@ -68,9 +72,10 @@ class UpdateFlowerPageState extends State<UpdateFlowerPage>{
     }
     catch(e)
     {
-      
+
     }
     }
+
   showAlertMessage(BuildContext context) {
     // set up the button
     Widget okButton = FlatButton(
@@ -187,7 +192,6 @@ class UpdateFlowerPageState extends State<UpdateFlowerPage>{
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-
         elevation: 5.0,
         backgroundColor: Color.fromRGBO(61, 212, 125, 100),
 

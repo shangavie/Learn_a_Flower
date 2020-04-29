@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:email_validator/email_validator.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';// use firebase as database
+import 'package:firebase_auth/firebase_auth.dart'; // use firbase authentication to store user signup detail(Here email and password is used for registeration)
+import 'package:email_validator/email_validator.dart'; //To validate the email
 import 'login.dart';
+
 void main() => runApp(MyApp());
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -14,12 +15,13 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 class SignupPage extends StatefulWidget {
   SignupPage() : super();
   SignupPageState createState() => SignupPageState();
 }
-class SignupPageState extends State<SignupPage> {
 
+class SignupPageState extends State<SignupPage> {
   double screenHeight;
   bool showTextField = false;
   String _email,_password;
@@ -31,10 +33,11 @@ class SignupPageState extends State<SignupPage> {
       _formKey.currentState.save();
       try
       {
+        //Store signup details using firebase authentication
           FirebaseUser user = (await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password)).user;
           user.sendEmailVerification();
+          //To display welcome message and redirect to login page after click on the "ok" button
           showSuccessMessage(context);
-         // Navigator.of(context).pop();
       }
       catch(e)
     {
@@ -71,6 +74,7 @@ class SignupPageState extends State<SignupPage> {
       ),
     );
   }
+  //Design for top section of login screen
   Widget upperSection(BuildContext context) {
     return Container(
       height: screenHeight / 2,
@@ -80,6 +84,7 @@ class SignupPageState extends State<SignupPage> {
       ),
     );
   }
+  //Design for bottom section of login screen
   Widget lowerSection(BuildContext context) {
     return Align(
       alignment: Alignment.bottomCenter,
@@ -89,6 +94,7 @@ class SignupPageState extends State<SignupPage> {
       ),
     );
   }
+  //Design for add new flower details form
   Widget signupSection(BuildContext context) {
     return Column(
       children: <Widget>[
@@ -181,7 +187,7 @@ class SignupPageState extends State<SignupPage> {
       ],
     );
   }
-
+//dialog box
   showSuccessMessage(BuildContext context) {
     // set up the button
     Widget okButton = FlatButton(
@@ -190,7 +196,7 @@ class SignupPageState extends State<SignupPage> {
         Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
       },
     );
-    // set up the AlertDialog
+    // set up the SuccessDialog
     AlertDialog alert = AlertDialog(
       title: Text("FlowerSnap"),
       content: Text("Your account is created successfully! Welcome to the FlowerSnap"),
