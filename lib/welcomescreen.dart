@@ -14,19 +14,22 @@ class WelcomeScreen extends StatefulWidget {
     return WelcomeScreenState();
   }
 }
-
+/*Title:Create splash screen in Flutter
+ * Date:2019
+ * Availability:https://fluttermaster.com/create-splash-screen-in-flutter/
+ */
 class WelcomeScreenState extends State<WelcomeScreen> {
   @override
   void initState() {
     super.initState();
-    loadData();
+    loadingProcess();
   }
   //To display the welcome screen for 8 seconds
-  Future<Timer> loadData() async {
-    return new Timer(Duration(seconds: 8), onDoneLoading);
+  Future<Timer> loadingProcess() async {
+    return new Timer(Duration(seconds: 8), loadingNextScreen);
   }
   //Display login screen after the welcome screen(It will display after 8 seconds)
-  onDoneLoading() async {
+  loadingNextScreen() async {
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginPage()));
   }
 //Display welcome screen

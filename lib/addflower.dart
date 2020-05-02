@@ -38,6 +38,12 @@ class AddFlowerPageState extends State<AddFlowerPage> {
 
   Future<File> imageFile;
   String url, searchKey, loggedUser;
+
+/*Title:Shared Preferences in Flutter-shared preferences to keep user logged?
+ *Author:R Palankar
+ * Date:2020
+ * Availability:https://protocoderspoint.com/shared-preferences-in-flutter-how-to-keep-user-logged/
+ */
   SharedPreferences logindata;
   String loggedEmail;
 
@@ -72,6 +78,11 @@ class AddFlowerPageState extends State<AddFlowerPage> {
     }
 
   }
+/*Title:Upload Image File To Firebase Storage Using Flutter
+ *Author:P Patel
+ *Date:2019
+ *Availability:https://www.c-sharpcorner.com/article/upload-image-file-to-firebase-storage-using-flutter/
+*/
 
   File sampleImage;
   Future getImage() async {
@@ -81,7 +92,10 @@ class AddFlowerPageState extends State<AddFlowerPage> {
       sampleImage = tempImage;
     });
   }
-
+  /*Title: Flutter-Import Camera and Gallery Image|Best Ways
+   * Date:2019
+   * Availability:https://www.youtube.com/watch?v=cyhuPzAlgUU&feature=youtu.be
+   */
   Future<void> _selectionDialog(BuildContext context){
     return showDialog(context:context,builder: (BuildContext context)
     {
@@ -316,6 +330,11 @@ class AddFlowerPageState extends State<AddFlowerPage> {
                             left: 38, right: 38, top: 15, bottom: 15),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5)),
+                        /*Title:Upload Image File To Firebase Storage Using Flutter
+                         *Author:P Patel
+                         *Date:2019
+                         *Availability:https://www.c-sharpcorner.com/article/upload-image-file-to-firebase-storage-using-flutter/
+                        */
                         onPressed: () async{
                           try {
                             //Define the firebase storage link
@@ -350,6 +369,11 @@ class AddFlowerPageState extends State<AddFlowerPage> {
       ],
     );
   }
+  //Display an alert message
+  /*Title: How to make an AlertDialog in Flutter
+   * Date:2019
+   * Availability:https://stackoverflow.com/questions/53844052/how-to-make-an-alertdialog-in-flutter
+   */
   showMessage(BuildContext context) {
     // set up the button
     Widget okButton = FlatButton(
@@ -376,6 +400,11 @@ class AddFlowerPageState extends State<AddFlowerPage> {
     );
   }
 
+  //Display an alert message
+  /*Title: How to make an AlertDialog in Flutter
+   * Date:2019
+   * Availability:https://stackoverflow.com/questions/53844052/how-to-make-an-alertdialog-in-flutter
+   */
   showErrorMessage(BuildContext context) {
     // set up the button
     Widget okButton = FlatButton(
@@ -402,6 +431,11 @@ class AddFlowerPageState extends State<AddFlowerPage> {
     );
   }
 
+  //Display an alert message
+  /*Title: How to make an AlertDialog in Flutter
+   * Date:2019
+   * Availability:https://stackoverflow.com/questions/53844052/how-to-make-an-alertdialog-in-flutter
+   */
   showErrorMessage2() {
     // set up the button
     Widget okButton = FlatButton(
@@ -428,8 +462,13 @@ class AddFlowerPageState extends State<AddFlowerPage> {
     );
   }
 
-//Select image from gallery
-  pickImageFromGallery(ImageSource source, BuildContext context) async{
+  //Select image from gallery
+  /*Title: Flutter Tutorial-Select an image from Gallery and show in Imageview
+   *Author:James
+   * Date:2019
+   * Availability:http://www.coderzheaven.com/2019/01/08/flutter-tutorial-select-an-image-from-gallery-and-show-in-imageview/
+   */
+ pickImageFromGallery(ImageSource source, BuildContext context) async{
     setState(() {
       imageFile = ImagePicker.pickImage(source: source);
     });
@@ -437,6 +476,10 @@ class AddFlowerPageState extends State<AddFlowerPage> {
   }
 
   //Capture image using camera
+  /*Title: Flutter-Import Camera and Gallery Image|Best Ways
+   * Date:2019
+   * Availability:https://www.youtube.com/watch?v=cyhuPzAlgUU&feature=youtu.be
+   */
   pickImageFromCamera(ImageSource source, BuildContext context) async{
     setState(() {
       imageFile = ImagePicker.pickImage(source: source);
@@ -445,6 +488,11 @@ class AddFlowerPageState extends State<AddFlowerPage> {
   }
 
   //show the selected or captured image in the screen
+  /*Title: Flutter Tutorial-Select an image from Gallery and show in Imageview
+   *Author:James
+   * Date:2019
+   * Availability:http://www.coderzheaven.com/2019/01/08/flutter-tutorial-select-an-image-from-gallery-and-show-in-imageview/
+   */
   Widget showImage() {
     return FutureBuilder<File>(
       future: imageFile,

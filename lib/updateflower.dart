@@ -33,7 +33,6 @@ class UpdateFlowerPageState extends State<UpdateFlowerPage>{
 
   bool isEditing = false;
   Flower updateflower;
-  Future<File> imageFile;
   var uploadedBy;
   //Check the user who looged to the system with the user who add the flowers to the application.
   checkValidUser(DocumentSnapshot flower,Flower flower1)
@@ -75,7 +74,11 @@ class UpdateFlowerPageState extends State<UpdateFlowerPage>{
 
     }
     }
-
+//Display an alert message
+  /*Title: How to make an AlertDialog in Flutter
+   * Date:2019
+   * Availability:https://stackoverflow.com/questions/53844052/how-to-make-an-alertdialog-in-flutter
+   */
   showAlertMessage(BuildContext context) {
     // set up the button
     Widget okButton = FlatButton(

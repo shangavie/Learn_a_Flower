@@ -26,7 +26,12 @@ class SignupPageState extends State<SignupPage> {
   bool showTextField = false;
   String _email,_password;
   final GlobalKey<FormState> _formKey= GlobalKey<FormState>();
-
+//Sigup using firebase authentication
+  /*Title:Flutter- Firebase Tutorial Part 2 | Welcome page and sign in
+   *Author:R Brunhage
+   * Date:2018
+   * Availability:https://www.youtube.com/watch?v=bXlMNfwhlwg
+   */
   void Signup() async
   {
     if(_formKey.currentState.validate()){
@@ -187,7 +192,11 @@ class SignupPageState extends State<SignupPage> {
       ],
     );
   }
-//dialog box
+//Display an welcome message
+  /*Title: How to make an AlertDialog in Flutter
+   * Date:2019
+   * Availability:https://stackoverflow.com/questions/53844052/how-to-make-an-alertdialog-in-flutter
+   */
   showSuccessMessage(BuildContext context) {
     // set up the button
     Widget okButton = FlatButton(
